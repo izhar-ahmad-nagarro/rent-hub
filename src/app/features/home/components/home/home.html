@@ -1,0 +1,39 @@
+<div>
+  <section class="p-3">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-5xl font-bold mb-4">Find Your Perfect Home</h1>
+      <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+        Discover amazing apartments, connect with landlords, and find your next
+        home with ease.
+      </p>
+    </div>
+  </section>
+
+  <div>
+    <div class="text-center pt-4">
+      <h2>Featured Properties</h2>
+      <p>Handpicked premium listings just for you</p>
+    </div>
+    <div class="row p-3">
+      <div
+
+        *ngFor="let property of featuredProperties"
+        class="col-md-4 mb-4"
+      >
+        <app-apartment-card [property]="property"></app-apartment-card>
+      </div>
+    </div>
+    <div class="border-1 border-secondary rounded row p-3">
+      <h2>
+        {{properties.length}} Properties Available
+      </h2>
+      <div
+
+        *ngFor="let property of properties"
+        class="col-md-4 mb-4"
+      >
+        <app-apartment-card [property]="property"></app-apartment-card>
+      </div>
+    </div>
+  </div>
+</div>

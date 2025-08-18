@@ -1,0 +1,35 @@
+<div class="modal-header d-flex justify-content-between align-items-start">
+  <div>
+    <h5 class="modal-title">Login to RentHub</h5>
+    <p>Enter your credentials to access your account</p>
+  </div>
+  <app-button
+    type="button"
+    variant="close"
+    [size]="'sm'"
+    (clicked)="close()"
+  ></app-button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div class="mb-3">
+      <label>Email</label>
+      <input type="email" class="form-control" formControlName="email" />
+    </div>
+
+    <div class="mb-3">
+      <label>Password</label>
+      <input type="password" class="form-control" formControlName="password" />
+    </div>
+
+    <app-button
+      label="Login"
+      variant="primary"
+      [size]="'sm'"
+      [block]="true"
+      [disabled]="loginForm.invalid"
+      (clicked)="login()"
+    ></app-button>
+  </form>
+</div>

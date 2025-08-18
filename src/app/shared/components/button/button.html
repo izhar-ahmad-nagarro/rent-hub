@@ -1,0 +1,14 @@
+<button
+  [type]="type"
+  [disabled]="disabled()"
+  [ngClass]="classes"
+  (click)="handleClick($event)"
+>
+  <ng-container *ngIf="icon">
+    <i [class]="icon" class="me-2"></i>
+  </ng-container>
+  <ng-content>
+  </ng-content>
+
+  {{ label }}
+</button>

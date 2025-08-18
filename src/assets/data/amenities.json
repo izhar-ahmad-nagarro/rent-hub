@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "code": "wifi",
+    "label": "Wi-Fi",
+    "icon": "fa-wifi"
+  },
+  {
+    "id": 2,
+    "code": "parking",
+    "label": "Parking",
+    "icon": "fa-square-parking"
+  },
+  {
+    "id": 3,
+    "code": "ac",
+    "label": "Air Conditioning",
+    "icon": "fa-snowflake"
+  },
+  {
+    "id": 4,
+    "code": "pool",
+    "label": "Swimming Pool",
+    "icon": "fa-water-ladder"
+  },
+  {
+    "id": 5,
+    "code": "laundry",
+    "label": "Laundry Facility",
+    "icon": "fa-shirt"
+  },
+  {
+    "id": 6,
+    "code": "security",
+    "label": "24/7 Security",
+    "icon": "fa-shield-halved"
+  },
+  {
+    "id": 7,
+    "code": "gym",
+    "label": "Gym",
+    "icon": "fa-dumbbell"
+  },
+  {
+    "id": 8,
+    "code": "garden",
+    "label": "Garden",
+    "icon": "fa-seedling"
+  },
+  {
+    "id": 9,
+    "code": "smart_home",
+    "label": "Smart Home Features",
+    "icon": "fa-house-signal"
+  },
+  {
+    "id": 10,
+    "code": "elevator",
+    "label": "Elevator",
+    "icon": "fa-elevator"
+  }
+]

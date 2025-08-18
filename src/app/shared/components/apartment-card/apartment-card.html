@@ -1,0 +1,108 @@
+<div class="card h-100 shadow-sm" (click)="onViewDetails()">
+  <div class="position-relative">
+    <img
+      [src]="property().images[0]"
+      [alt]="property().title"
+      class="card-img-top"
+      style="object-fit: cover; height: 200px"
+    />
+
+    <!-- Favorite button -->
+    <app-button
+      variant="light"
+      [size]="'sm'"
+      [block]="true"
+      class="mt-auto position-absolute top-2 end-2 start-0 bg-transparent"
+      (clicked)="toggleFavorite($event)"
+    >
+      <i
+        class="fa-heart"
+        [ngClass]="{
+          'fas text-danger': isFavorited,
+          'far text-muted': !isFavorited
+        }"
+      ></i>
+    </app-button>
+  </div>
+
+  <div class="card-body d-flex flex-column">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <span class="h4 text-primary"
+        >${{ property().expectedRent | number }}/mo</span
+      >
+      <span class="badge bg-secondary">{{
+        propertyTypeEnum[property().type]
+      }}</span>
+    </div>
+
+    <h5 class="card-title text-truncate">{{ property().title }}</h5>
+
+    <!-- Address -->
+    <div class="d-flex align-items-center text-muted mb-2">
+      <i class="fas fa-map-marker-alt me-2"></i>
+      <small class="text-truncate">{{ property().location }}</small>
+    </div>
+
+    <!-- Features -->
+    <div class="d-flex text-muted small mb-2 gap-3">
+      <!-- <ng-container *ngIf="property().bedrooms > 0">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-bed me-1"></i>
+          {{ property().bedrooms }} bed{{ property().bedrooms !== 1 ? 's' : '' }}
+        </div>
+      </ng-container>
+      <div class="d-flex align-items-center">
+        <i class="fas fa-bath me-1"></i>
+        {{ property().bathrooms }} bath{{ property().bathrooms !== 1 ? 's' : '' }}
+      </div> -->
+      <div class="d-flex align-items-center">
+        <i class="fas fa-ruler-combined me-1"></i>
+        {{ property().size }}
+      </div>
+      @if(property().isFurnished){
+        <div>
+            <i class="fa-solid fa-circle-check"></i>
+            Furnished
+        </div>
+      }
+      <div>
+        <i class="fa-solid fa-circle-check"></i>
+        {{priceModeEnum[property().priceMode]}}
+      </div>
+    </div>
+
+    <!-- Amenities -->
+    <div class="d-flex flex-wrap gap-1 mb-3">
+      <span
+        *ngFor="let am of property().amenities.slice(0, 3)"
+        class="badge bg-light text-dark small"
+      >
+        {{ am }}
+      </span>
+      <span
+        *ngIf="property().amenities.length > 3"
+        class="badge bg-light text-dark small"
+      >
+        +{{ property().amenities.length - 3 }} more
+      </span>
+    </div>
+
+    <!-- Footer Info -->
+    <div class="d-flex justify-content-between text-muted small mb-3">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-user me-1"></i>
+        {{ property().ownerName }}
+      </div>
+    </div>
+
+    <!-- View Details Button -->
+    <app-button
+      label="View Details"
+      variant="primary"
+      [size]="'sm'"
+      [block]="true"
+      class="mt-auto"
+      (clicked)="onViewDetails()"
+    ></app-button>
+  </div>
+</div>
