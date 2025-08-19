@@ -17,7 +17,7 @@
     <div class="row p-3">
       <div
 
-        *ngFor="let property of featuredProperties"
+        *ngFor="let property of featuredProperties()"
         class="col-md-4 mb-4"
       >
         <app-apartment-card [property]="property"></app-apartment-card>
@@ -25,11 +25,11 @@
     </div>
     <div class="border-1 border-secondary rounded row p-3">
       <h2>
-        {{properties.length}} Properties Available
+        {{properties().length}} Properties Available
       </h2>
       <div
 
-        *ngFor="let property of properties"
+        *ngFor="let property of properties()"
         class="col-md-4 mb-4"
       >
         <app-apartment-card [property]="property"></app-apartment-card>

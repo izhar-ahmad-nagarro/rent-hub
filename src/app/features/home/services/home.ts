@@ -1,12 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { IProperty } from '../../../shared/interface/property.interface';
+import { IProperty } from '../interface/property.interface';
 import { map, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class HomeAPIService {
   private readonly http = inject(HttpClient);
 
+  getAmenities() {
+    const amenitiesUrl = 'assets/data/amenities.json';
+    return this.http.get<Array<string>>(amenitiesUrl);
+  }
   getProperties(
     search: string = '',
     sort: 'asc' | 'desc' = 'asc'
@@ -18,8 +22,7 @@ export class HomeAPIService {
           const term = search.toLowerCase();
           properties = properties.filter(
             (p) =>
-              p.title.toLowerCase().includes(term) ||
-              p.description.toLowerCase().includes(term)
+              p.title.toLowerCase().includes(term) 
           );
         }
 

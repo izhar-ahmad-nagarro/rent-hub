@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Land Lord",
+    "email": "landlord@gmail.com",
+    "password": "Test@123",
+    "role": 1
+  },
+  {
+    "name": "Renter",
+    "email": "renter@gmail.com",
+    "password": "Test@123",
+    "role": 2
+  }
+]

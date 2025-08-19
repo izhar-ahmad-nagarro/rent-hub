@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, input } from '@angular/core';
-import { IProperty, PriceMode, PropertyType } from '../../interface/property.interface';
+import { IProperty, PriceMode, PropertyType } from '../../../features/home/interface/property.interface';
 import { Button } from '../button/button';
 
 @Component({

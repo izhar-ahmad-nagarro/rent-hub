@@ -31,6 +31,6 @@ export enum LeaseType {
 }
 
 export enum PriceMode {
-  Fixed = 0,
+  'Fixed Price' = 0,
   Negotiable = 1,
 }

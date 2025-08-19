@@ -23,7 +23,7 @@ export class Login {
   login() {
     if (this.loginForm.valid) {
       const formData = this.loginForm.value;
-      this.activeModal.close(formData); // Pass data back
+      this.activeModal.close(formData);
     }
   }
 

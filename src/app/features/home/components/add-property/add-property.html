@@ -1,0 +1,201 @@
+<div class="container mt-4">
+  <div class="card shadow-lg p-4">
+    <h3 class="mb-4">Add New Property</h3>
+
+    <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input
+          formControlName="title"
+          type="text"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': isInvalid('title') }"
+        />
+        <div class="invalid-feedback">Title is required.</div>
+      </div>
+
+      <!-- Owner Name -->
+      <div class="mb-3">
+        <label class="form-label">Owner Name</label>
+        <input
+          formControlName="ownerName"
+          type="text"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': isInvalid('ownerName') }"
+        />
+        <div class="invalid-feedback">Owner name is required.</div>
+      </div>
+
+      <!-- Description -->
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea
+          formControlName="description"
+          class="form-control"
+          rows="3"
+          [ngClass]="{ 'is-invalid': isInvalid('description') }"
+        ></textarea>
+        <div class="invalid-feedback">Description is required.</div>
+      </div>
+
+      <!-- Location -->
+      <div class="mb-3">
+        <label class="form-label">Location</label>
+        <input
+          formControlName="location"
+          type="text"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': isInvalid('location') }"
+        />
+        <div class="invalid-feedback">Location is required.</div>
+      </div>
+
+      <!-- Size -->
+      <div class="mb-3">
+        <label class="form-label">Size</label>
+        <input
+          formControlName="size"
+          type="text"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': isInvalid('size') }"
+        />
+        <div class="invalid-feedback">Size is required.</div>
+      </div>
+
+      <!-- Expected Rent -->
+      <div class="mb-3">
+        <label class="form-label">Expected Rent ($)</label>
+        <input
+          formControlName="expectedRent"
+          type="number"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': isInvalid('expectedRent') }"
+        />
+        <div class="invalid-feedback">
+          Rent is required and must be a non-negative number.
+        </div>
+      </div>
+
+      <!-- Lease Type -->
+      <div class="mb-3">
+        <label class="form-label">Lease Type</label>
+        <select
+          class="form-select"
+          formControlName="leaseType"
+          [ngClass]="{ 'is-invalid': isInvalid('leaseType') }"
+        >
+          <option value="">Select</option>
+          <option [value]="type.value" *ngFor="let type of leaseType">
+            {{ type.label }}
+          </option>
+        </select>
+        <div class="invalid-feedback">Lease type is required.</div>
+      </div>
+
+      <!-- Price Mode -->
+      <div class="mb-3">
+        <label class="form-label">Price Mode</label>
+        <select
+          class="form-select"
+          formControlName="priceMode"
+          [ngClass]="{ 'is-invalid': isInvalid('priceMode') }"
+        >
+          <option value="">Select</option>
+          <option [value]="type.value" *ngFor="let type of priceMode">
+            {{ type.label }}
+          </option>
+        </select>
+        <div class="invalid-feedback">Price mode is required.</div>
+      </div>
+
+      <!-- Type -->
+      <div class="mb-3">
+        <label class="form-label">Property Type</label>
+        <select
+          class="form-select"
+          formControlName="type"
+          [ngClass]="{ 'is-invalid': isInvalid('type') }"
+        >
+          <option value="">Select</option>
+          <option [value]="type.value" *ngFor="let type of propertyTypes">
+            {{ type.label }}
+          </option>
+        </select>
+        <div class="invalid-feedback">Property type is required.</div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              formControlName="isFurnished"
+              type="checkbox"
+              id="furnishedCheck"
+            />
+            <label class="form-check-label" for="furnishedCheck"
+              >Furnished</label
+            >
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              formControlName="isShared"
+              type="checkbox"
+              id="sharedCheck"
+            />
+            <label class="form-check-label" for="sharedCheck">Shared</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              formControlName="featured"
+              type="checkbox"
+              id="featuredCheck"
+            />
+            <label class="form-check-label" for="featuredCheck">Featured</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Amenities, checkboxes (optional validation can be added) -->
+      <div class="mb-3">
+        <label class="form-label">Amenities</label>
+        <div class="d-flex flex-wrap gap-3">
+          <div *ngFor="let amenity of amenitiesList">
+            <input
+              type="checkbox"
+              [value]="amenity.label"
+              (change)="onAmenityChange($event)"
+              class="form-check-input me-1"
+            />
+            {{ amenity.label }}
+          </div>
+        </div>
+      </div>
+      <!-- Image Upload -->
+      <div class="mb-4">
+        <label class="form-label">Upload Image</label>
+        <input
+          type="file"
+          class="form-control"
+          (change)="onImageSelected($event)"
+        />
+      </div>
+
+      <!-- Submit Button -->
+
+      <app-button
+        label="Submit Property"
+        type="submit"
+        [disabled]="!propertyForm.valid"
+        variant="primary"
+        icon="fas fa-upload me-2"
+      ></app-button>
+    </form>
+  </div>
+</div>
