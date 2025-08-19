@@ -36,4 +36,19 @@ export class HomeAPIService {
       })
     );
   }
+
+  addProperties(payload: IProperty) {
+    const properties = this.getPropertiesFromStorage();
+    properties.push(payload);
+    this.setPropertiesInStorage(properties);
+  }
+
+  private getPropertiesFromStorage() {
+    const storageKey = 'properties';
+    return JSON.parse(localStorage.getItem(storageKey) || '[]')
+  }
+  private setPropertiesInStorage(properties: IProperty[]) {
+    const storageKey = 'properties';
+    localStorage.setItem(storageKey, JSON.stringify(properties));
+  }
 }

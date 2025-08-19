@@ -106,10 +106,7 @@ export class AddProperty implements OnInit {
 
   onSubmit() {
     if (this.propertyForm.valid) {
-      console.log(
-        'Form Data to Submit:',
-        this.propertyForm.value
-      );
+      this.homeService.addProperties(this.propertyForm.value);
       alert('Property submitted!');
     }
   }

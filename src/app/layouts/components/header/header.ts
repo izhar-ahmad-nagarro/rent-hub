@@ -15,6 +15,7 @@ import { SearchService } from '../../../features/home/services';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
+import { AlertService } from '../../../shared/services/alert.service';
 
 @Component({
   selector: 'app-header',
@@ -35,6 +36,7 @@ export class Header {
   private router = inject(Router);
   searchService = inject(SearchService);
   currentUrl = signal<string>('');
+  private alertService = inject(AlertService);
   isHomePage = computed(() => this.currentUrl() === '/home');
   constructor() {
     this.router.events
@@ -44,7 +46,6 @@ export class Header {
       });
     effect(() => {
       const user = this.authService.currentUser();
-      console.log(user, '>>>>>>>>>>>>>>>>>>>>.');
     });
   }
 
