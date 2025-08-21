@@ -14,9 +14,9 @@
 
   <form [formGroup]="enquiryForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
-      <label for="name" class="form-label">Name</label>
-      <input formControlName="name" type="text" class="form-control" id="name" />
-      <div *ngIf="enquiryForm.get('name')?.invalid && enquiryForm.get('name')?.touched" class="text-danger">
+      <label for="userName" class="form-label">Name</label>
+      <input formControlName="userName" type="text" class="form-control" id="userName" />
+      <div *ngIf="enquiryForm.get('userName')?.invalid && enquiryForm.get('userName')?.touched" class="text-danger">
         Name is required.
       </div>
     </div>

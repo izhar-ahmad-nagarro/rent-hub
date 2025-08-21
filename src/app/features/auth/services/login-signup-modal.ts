@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Login } from '../components/login/login';
 import { SignUp } from '../components/sign-up/sign-up';
 
@@ -16,12 +16,12 @@ export class LoginSignupModal {
     return modalRef.result;
   }
 
-  openSignup(): Promise<any> {
+  openSignup(): NgbModalRef {
     const modalRef = this.modalService.open(SignUp, {
       centered: true,
       backdrop: 'static',
     });
-    return modalRef.result;
+    return modalRef;
   }
 
 }

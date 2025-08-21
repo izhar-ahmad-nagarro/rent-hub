@@ -22,8 +22,8 @@
       >
         <app-apartment-card 
         [property]="property" 
-        (markAsFavorite)="markAsFavorite($event)" 
-        [favorites]="favorites"
+        (togglefavClick)="togglefavClick($event)" 
+        [favorites]="favorites()"
         (sendEnquiryClick)="sendEnquiry($event)"
         
         ></app-apartment-card>
@@ -40,8 +40,8 @@
       >
         <app-apartment-card 
         [property]="property" 
-        (markAsFavorite)="markAsFavorite($event)" 
-        [favorites]="favorites"
+        (togglefavClick)="togglefavClick($event)" 
+        [favorites]="favorites()"
         (sendEnquiryClick)="sendEnquiry($event)"
         ></app-apartment-card>
       </div>

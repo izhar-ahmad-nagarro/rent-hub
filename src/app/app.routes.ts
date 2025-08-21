@@ -9,11 +9,19 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'add-property',
+    path: 'property/add',
     loadComponent: () => {
       return import(
         './features/home/components/add-property/add-property'
       ).then((c) => c.AddProperty);
+    },
+  },
+  {
+    path: 'property/details/:id',
+    loadComponent: () => {
+      return import(
+        './features/home/components/property-details/property-details.component'
+      ).then((c) => c.PropertyDetailsComponent);
     },
   },
   { path: '**', redirectTo: '/home' }

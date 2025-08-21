@@ -1,0 +1,42 @@
+<div class="mt-5">
+  <h5 class="mb-3">Comments ({{ comments.length }})</h5>
+
+  <div *ngIf="comments.length === 0" class="text-muted mb-3">
+    No comments yet. Be the first to ask or share something!
+  </div>
+
+  <!-- List of comments -->
+  <div *ngFor="let comment of comments" class="mb-3 border-bottom pb-2">
+    <div class="d-flex align-items-start">
+      <!-- Avatar or initials -->
+      <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3"
+           style="width: 40px; height: 40px; font-size: 1rem;">
+        {{ getInitials(comment.userName) }}
+      </div>
+
+      <div>
+        <strong>{{ comment.userName }}</strong>
+        <div class="text-muted small">{{ comment.createdAt | date:'short' }}</div>
+        <p class="mt-1 mb-0">{{ comment.content }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comment form -->
+  <form [formGroup]="commentForm" (ngSubmit)="submitComment()" class="mt-4">
+    <div class="form-floating mb-3">
+      <textarea
+        class="form-control"
+        placeholder="Write a comment..."
+        id="commentInput"
+        style="height: 100px"
+        formControlName="message"
+      ></textarea>
+      <label for="commentInput">add comment</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="commentForm.invalid">
+      Post Comment
+    </button>
+  </form>
+</div>

@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { HomeAPIService } from '../../services';
+import { PropertyService } from '../../services';
 import { Button, LeaseType, PriceMode, PropertyType } from '../../../../shared';
 import { AlertService } from '../../../../shared/services/alert.service';
 import { Router } from '@angular/router';
@@ -26,7 +26,7 @@ export class AddProperty implements OnInit {
     value: number;
   }> = [];
   private fb = inject(FormBuilder);
-  private homeService = inject(HomeAPIService);
+  private propertyService = inject(PropertyService);
   private alertService = inject(AlertService);
   propertyTypes: Array<{
     label: string;
@@ -61,31 +61,8 @@ export class AddProperty implements OnInit {
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
   ngOnInit(): void {
-    this.priceMode = Object.keys(PriceMode)
-      .filter((key) => isNaN(Number(key)))
-      .map((key) => ({
-        label: key,
-        value: PriceMode[key as keyof typeof PriceMode],
-      }));
-    this.leaseType = Object.keys(LeaseType)
-      .filter((key) => isNaN(Number(key)))
-      .map((key) => ({
-        label: key,
-        value: LeaseType[key as keyof typeof LeaseType],
-      }));
-    this.homeService.getAmenities().subscribe((res) => {
-      this.amenitiesList = res;
-    });
-
-    this.propertyTypes = Object.keys(PropertyType)
-      .filter((key) => isNaN(Number(key)))
-      .map((key) => ({
-        label: key,
-        value: PropertyType[key as keyof typeof PropertyType],
-      }));
-    this.homeService.getAmenities().subscribe((res) => {
-      this.amenitiesList = res;
-    });
+    setTimeout(() => this.getEnumData());
+    this.getAmenities();
   }
   onAmenityChange(event: any) {
     const amenities: FormArray = this.propertyForm.get(
@@ -109,15 +86,44 @@ export class AddProperty implements OnInit {
         const base64String = reader.result as string;
         this.propertyForm.patchValue({ images: [base64String] });
       };
-      reader.readAsDataURL(file); 
+      reader.readAsDataURL(file);
     }
   }
 
   onSubmit() {
     if (this.propertyForm.valid) {
-      this.homeService.addProperties(this.propertyForm.value);
+      this.propertyService.add(this.propertyForm.value);
       this.alertService.success('Property added successfully');
       this.router.navigate(['home']);
     }
+  }
+
+  private async getAmenities() {
+    this.amenitiesList = await this.propertyService.getAmenities();
+  }
+
+  private getEnumData() {
+    //get price mode
+    this.priceMode = Object.keys(PriceMode)
+      .filter((key) => isNaN(Number(key)))
+      .map((key) => ({
+        label: key,
+        value: PriceMode[key as keyof typeof PriceMode],
+      }));
+    //get lease type
+    this.leaseType = Object.keys(LeaseType)
+      .filter((key) => isNaN(Number(key)))
+      .map((key) => ({
+        label: key,
+        value: LeaseType[key as keyof typeof LeaseType],
+      }));
+
+    //get property types
+    this.propertyTypes = Object.keys(PropertyType)
+      .filter((key) => isNaN(Number(key)))
+      .map((key) => ({
+        label: key,
+        value: PropertyType[key as keyof typeof PropertyType],
+      }));
   }
 }

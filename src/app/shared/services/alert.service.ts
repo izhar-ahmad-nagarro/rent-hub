@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { IAlert } from '../components/alert/alert.component';
 
-export type AlertType = 'success' | 'error' | 'info' | 'warning';
+export type AlertType = 'success' | 'danger' | 'info' | 'warning';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +17,7 @@ export class AlertService {
     const newAlert: IAlert = { id, type, message };
     this.alertsSignal.update((alerts) => [...alerts, newAlert]);
 
-    setTimeout(() => this.dismiss(id), 5000);
+    // setTimeout(() => this.dismiss(id), 5000);
   }
 
   success(msg: string) {
@@ -25,7 +25,7 @@ export class AlertService {
   }
 
   error(msg: string) {
-    this.show('error', msg);
+    this.show('danger', msg);
   }
 
   info(msg: string) {

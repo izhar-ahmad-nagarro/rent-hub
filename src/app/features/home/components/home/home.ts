@@ -3,18 +3,21 @@ import {
   Component,
   effect,
   inject,
-  OnInit,
-  Signal,
   signal,
-  WritableSignal,
 } from '@angular/core';
-import { ApartmentCard } from '../../../../shared';
-import { HomeAPIService } from '../../services/home-api.service';
+import { ApartmentCard, IUser, IUserQuery } from '../../../../shared';
 import { IProperty } from '../../interface/property.interface';
 import { CommonModule } from '@angular/common';
-import { SearchService } from '../../services';
+import {
+  PropertyService,
+  SearchService,
+  UserFavoritesService,
+} from '../../services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendEnquiryComponent } from '../send-enquiry/send-enquiry.component';
+import { AuthService } from '../../../auth';
+import { UserQueryService } from '../../services/user-query.service';
+import { AlertService } from '../../../../shared/services/alert.service';
 
 @Component({
   selector: 'app-home',
@@ -25,33 +28,64 @@ import { SendEnquiryComponent } from '../send-enquiry/send-enquiry.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home {
-  private homeService = inject(HomeAPIService);
   properties = signal<IProperty[]>([]);
   featuredProperties = signal<IProperty[]>([]);
-  private readonly modalService = inject(NgbModal);
+  favorites = signal<Map<number, number>>(new Map());
+
+
+  private userFavoriteService = inject(UserFavoritesService);
+  private authService = inject(AuthService);
+  private propertyService = inject(PropertyService);
   private searchService = inject(SearchService);
-  favorites : Map<number, number> = new Map();
+  private userQueryService = inject(UserQueryService);
+  private alertService = inject(AlertService);
+  
+  activeUser: IUser | null = null;
+  
+  private readonly modalService = inject(NgbModal);
+  
   constructor() {
-    this.favorites = this.homeService.getuserFavorites();
-    console.log(this.favorites)
-    effect(() => {
+    effect(async () => {
       const term = this.searchService.debouncedSearch().trim().toLowerCase();
-      this.homeService.getProperties(term).subscribe((res) => {
-        this.properties.set(res);
-        this.featuredProperties.set(res.filter((p) => p.featured));
-      });
+      const resp = await this.propertyService.getAll(term);
+      this.properties.set(resp);
+      this.featuredProperties.set(resp.filter((p) => p.featured));
+    });
+
+    effect(async () => {
+      this.activeUser = this.authService.currentUser();
+      if (this.activeUser) {
+        const ids = new Map((
+          await this.userFavoriteService.getUserFavorites(this.activeUser.id)
+        ).map((f) => [f.propertyId, f.propertyId]));
+        this.favorites.set(ids as Map<number, number>);
+      } else {
+        this.favorites.set(new Map());
+      }
     });
   }
 
-  markAsFavorite(payload: IProperty) {
-    payload.isFavorited = !payload.isFavorited;
-    this.homeService.addUserFavorite(payload);
+  async togglefavClick(payload: IProperty) {
+    if (this.activeUser?.id) {
+      payload.isFavorited = !payload.isFavorited;
+      await this.userFavoriteService.updateUserFavorite(payload.isFavorited, {
+        userId: this.activeUser?.id,
+        propertyId: payload.id,
+      });
+    }
   }
 
   sendEnquiry(property: IProperty) {
-    this.modalService.open(SendEnquiryComponent, {
+    const modalRef = this.modalService.open(SendEnquiryComponent, {
       centered: true,
-      backdrop: 'static'
-    })
+      backdrop: 'static',
+    });
+    modalRef.componentInstance.property = property;
+    modalRef.componentInstance.activeUser = this.activeUser;
+    modalRef.componentInstance.submitUserQuery.subscribe(async (res:IUserQuery)=> {
+      await this.userQueryService.adduserQuery(res);
+      this.alertService.success('Query submitted successfully');
+      modalRef.close();
+    });
   }
 }

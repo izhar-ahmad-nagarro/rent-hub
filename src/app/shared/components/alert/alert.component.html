@@ -1,5 +1,5 @@
 @for (alert of alerts(); track alert) {
-    <ngb-alert [type]="alert.type" (closed)="close(alert)">{{
+    <ngb-alert [type]="alert.type" (closed)="close(alert)" class="custom-alert">{{
     alert.message
     }}</ngb-alert>
 }

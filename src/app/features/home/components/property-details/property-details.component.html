@@ -1,0 +1,81 @@
+<div class="container my-4" *ngIf="property">
+  <div class="row">
+    <!-- Left: Image Carousel -->
+    <div class="col-md-6">
+      <ngb-carousel
+        *ngIf="property.images.length > 0"
+        [showNavigationArrows]="true"
+        [showNavigationIndicators]="true"
+      >
+        <ng-template
+          ngbSlide
+          *ngFor="let img of property.images; let i = index"
+        >
+          <img
+            [src]="img"
+            class="d-block w-100 rounded"
+            alt="Property Image {{ i + 1 }}"
+            style="height: 400px; object-fit: cover"
+          />
+        </ng-template>
+      </ngb-carousel>
+    </div>
+
+    <!-- Right: Property Details -->
+    <div class="col-md-6 d-flex flex-column">
+      <h1>{{ property.title }}</h1>
+      <h3 class="text-primary">
+        {{ property.expectedRent | currency : "INR" }}/month
+      </h3>
+      <p class="text-muted">
+        {{ propertyTypeEnum[property.type] }} |
+        {{ leaseTypeEnum[property.leaseType] }}
+      </p>
+
+      <div class="mb-3"><strong>Location:</strong> {{ property.location }}</div>
+
+      <div class="mb-3"><strong>Size:</strong> {{ property.size }}</div>
+
+      <div class="mb-3">
+        <strong>Price Mode:</strong> {{ priceModeEnum[property.priceMode] }}
+      </div>
+
+      <div class="mb-3 d-flex align-items-center gap-2">
+        <span *ngIf="property.isFurnished" class="badge bg-success"
+          >Furnished</span
+        >
+        <span *ngIf="property.isShared" class="badge bg-info text-dark"
+          >Shared</span
+        >
+        <span *ngIf="property.featured" class="badge bg-warning text-dark"
+          >Featured</span
+        >
+      </div>
+
+      <div class="mb-3">
+        <strong>Amenities:</strong>
+        <ul>
+          <li *ngFor="let amenity of property.amenities">{{ amenity }}</li>
+        </ul>
+      </div>
+
+      <div class="mb-3">
+        <strong>Description:</strong>
+        <p>{{ property.description }}</p>
+      </div>
+
+      <div class="mb-3"><strong>Owner:</strong> {{ property.ownerName }}</div>
+
+      <div class="mt-auto">
+        <button class="btn btn-primary w-100" (click)="sendEnquiry()">
+          Send Enquiry
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comments Section -->
+  <hr />
+  <app-comment-section [propertyId]="property.id"></app-comment-section>
+  <!-- <app-comments [propertyId]="propertyd"></app-comments> -->
+</div>

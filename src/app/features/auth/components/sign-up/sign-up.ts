@@ -1,31 +1,39 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Button } from '../../../../shared';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Output } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { NgbActiveModal, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { Button, UserRole } from '../../../../shared';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [ReactiveFormsModule, CommonModule, Button],
+  imports: [ReactiveFormsModule, CommonModule, Button, NgbDropdownModule],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignUp {
   signupForm: FormGroup;
+  userRoles = UserRole;
   private readonly activeModal = inject(NgbActiveModal);
   private readonly fb = inject(FormBuilder);
-  constructor(){
+  @Output() signupUser = new EventEmitter();
+  constructor() {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+      role: [this.userRoles.Renter, Validators.required],
     });
   }
 
   signup() {
     if (this.signupForm.valid) {
-      this.activeModal.close(this.signupForm.value); // return form data
+      this.signupUser.emit(this.signupForm.value)
     }
   }
 

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { HomeAPIService } from './home-api.service';
+import { UserQueryService } from './user-query.service';
 
-describe('Home', () => {
-  let service: HomeAPIService;
+describe('UserQueryService', () => {
+  let service: UserQueryService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(HomeAPIService);
+    service = TestBed.inject(UserQueryService);
   });
 
   it('should be created', () => {

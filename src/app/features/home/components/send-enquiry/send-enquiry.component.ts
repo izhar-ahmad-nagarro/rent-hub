@@ -1,39 +1,54 @@
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Button } from '../../../../shared';
+import { Button, IProperty, IUser } from '../../../../shared';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-send-enquiry',
-  imports: [ReactiveFormsModule, Button],
+  imports: [ReactiveFormsModule, Button, CommonModule],
   templateUrl: './send-enquiry.component.html',
   styleUrl: './send-enquiry.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SendEnquiryComponent {
-  enquiryForm: FormGroup;
+export class SendEnquiryComponent implements OnInit {
+  enquiryForm: FormGroup = new FormGroup({});
   private activeModal = inject(NgbActiveModal);
+  @Output() submitUserQuery = new EventEmitter();
+  property?: IProperty;
+  activeUser?: IUser;
+  private fb = inject(FormBuilder);
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  ngOnInit(): void {
     this.enquiryForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      userName: [this.activeUser?.name, Validators.required],
+      email: [this.activeUser?.email, [Validators.required, Validators.email]],
       message: ['', Validators.required],
+      propertyId:[this.property?.id],
+      userId: [this.activeUser?.id],
+      createdAt: [new Date()]
     });
+    if(this.activeUser){
+      this.enquiryForm.controls['userName'].disable();
+      this.enquiryForm.controls['email'].disable();
+    }
   }
 
   onSubmit() {
-    if (this.enquiryForm.valid) {
-      // this.http.post('/api/enquiry', this.enquiryForm.value).subscribe({
-      //   next: () => {
-      //     alert('Enquiry sent successfully!');
-      //     this.enquiryForm.reset();
-      //   },
-      //   error: () => {
-      //     alert('Error sending enquiry.');
-      //   }
-      // });
+    if (this.enquiryForm?.valid) {
+      this.submitUserQuery.emit(this.enquiryForm.getRawValue());
     }
   }
 

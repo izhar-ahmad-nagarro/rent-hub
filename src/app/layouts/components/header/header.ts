@@ -6,7 +6,7 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Button } from '../../../shared';
+import { Button, IUser } from '../../../shared';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoginSignupModal } from '../../../features/auth/services/login-signup-modal';
 import { AuthService } from '../../../features';
@@ -52,14 +52,22 @@ export class Header {
   async login() {
     const result = await this.loginSignupModal.openLogin();
     const user = await this.authService.loginUser(result);
-    if(!user){
+    if (!user) {
       this.alertService.error('Invalid email or password');
     }
   }
 
   async signUp() {
-    const result = await this.loginSignupModal.openSignup();
-    await this.authService.saveUser(result);
+    const modalRef = await this.loginSignupModal.openSignup();
+    modalRef.componentInstance.signupUser.subscribe(async (res: IUser) => {
+      const result = await this.authService.saveUser(res);
+      if (result.success) {
+        this.alertService.success(result.message);
+        modalRef.close();
+      } else {
+        this.alertService.error(result.message);
+      }
+    });
   }
 
   logout() {
@@ -67,6 +75,6 @@ export class Header {
   }
 
   postProperty() {
-    this.router.navigate(['/add-property']);
+    this.router.navigate(['/property/add']);
   }
 }
