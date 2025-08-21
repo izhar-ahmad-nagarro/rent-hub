@@ -20,7 +20,13 @@
         *ngFor="let property of featuredProperties()"
         class="col-md-4 mb-4"
       >
-        <app-apartment-card [property]="property"></app-apartment-card>
+        <app-apartment-card 
+        [property]="property" 
+        (markAsFavorite)="markAsFavorite($event)" 
+        [favorites]="favorites"
+        (sendEnquiryClick)="sendEnquiry($event)"
+        
+        ></app-apartment-card>
       </div>
     </div>
     <div class="border-1 border-secondary rounded row p-3">
@@ -32,7 +38,12 @@
         *ngFor="let property of properties()"
         class="col-md-4 mb-4"
       >
-        <app-apartment-card [property]="property"></app-apartment-card>
+        <app-apartment-card 
+        [property]="property" 
+        (markAsFavorite)="markAsFavorite($event)" 
+        [favorites]="favorites"
+        (sendEnquiryClick)="sendEnquiry($event)"
+        ></app-apartment-card>
       </div>
     </div>
   </div>

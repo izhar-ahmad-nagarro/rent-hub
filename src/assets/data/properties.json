@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "title": "Modern Studio in Downtown",
     "description": "Cozy and well-lit studio apartment close to public transport.",
     "ownerName": "Alice Johnson",
@@ -16,6 +17,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 2,
     "title": "Spacious Villa with Garden",
     "description": "Luxurious 3BHK villa with a large garden and parking.",
     "ownerName": "Robert Smith",
@@ -32,6 +34,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 3,
     "title": "Affordable 1BHK in Urban Area",
     "description": "Clean and compact 1BHK for working professionals.",
     "ownerName": "Emily Clark",
@@ -47,6 +50,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 4,
     "title": "2BHK with Balcony View",
     "description": "Enjoy a scenic view from your spacious balcony.",
     "ownerName": "John Doe",
@@ -62,6 +66,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 5,
     "title": "Premium Apartment with Gym Access",
     "description": "Modern apartment in gated community with gym and pool.",
     "ownerName": "Karen White",
@@ -77,6 +82,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 6,
     "title": "Budget Studio for Students",
     "description": "Affordable, safe and convenient location for students.",
     "ownerName": "Tom Hardy",
@@ -92,6 +98,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 7,
     "title": "Family-Friendly 3BHK",
     "description": "Spacious 3-bedroom apartment ideal for families.",
     "ownerName": "Sandra Lee",
@@ -107,6 +114,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 8,
     "title": "1BHK Near Tech Hub",
     "description": "Perfect for software professionals working nearby.",
     "ownerName": "Mark Benson",
@@ -122,6 +130,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 9,
     "title": "2BHK with Smart Home Features",
     "description": "Equipped with voice control, smart locks, and lighting.",
     "ownerName": "Linda Ray",
@@ -137,6 +146,7 @@
     "images": ["assets/images/apartment-first.jpg"]
   },
   {
+    "id": 10,
     "title": "Luxury Penthouse",
     "description": "Top floor penthouse with private elevator and pool access.",
     "ownerName": "Arthur King",

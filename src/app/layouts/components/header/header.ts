@@ -51,7 +51,10 @@ export class Header {
 
   async login() {
     const result = await this.loginSignupModal.openLogin();
-    this.authService.loginUser(result);
+    const user = await this.authService.loginUser(result);
+    if(!user){
+      this.alertService.error('Invalid email or password');
+    }
   }
 
   async signUp() {

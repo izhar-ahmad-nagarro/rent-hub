@@ -1,4 +1,5 @@
 export interface IProperty {
+    id: number;
     title: string;
     description: string;
     ownerName: string;
@@ -13,6 +14,7 @@ export interface IProperty {
     amenities: Array<string>;
     images: Array<string>;
     featured?: boolean;
+    isFavorited?: boolean;
 }
 
 export enum PropertyType {

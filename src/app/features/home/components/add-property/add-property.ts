@@ -9,6 +9,8 @@ import {
 } from '@angular/forms';
 import { HomeAPIService } from '../../services';
 import { Button, LeaseType, PriceMode, PropertyType } from '../../../../shared';
+import { AlertService } from '../../../../shared/services/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-property',
@@ -25,6 +27,7 @@ export class AddProperty implements OnInit {
   }> = [];
   private fb = inject(FormBuilder);
   private homeService = inject(HomeAPIService);
+  private alertService = inject(AlertService);
   propertyTypes: Array<{
     label: string;
     value: number;
@@ -33,6 +36,7 @@ export class AddProperty implements OnInit {
     label: string;
     value: number;
   }> = [];
+  private router = inject(Router);
   constructor() {
     this.propertyForm = this.fb.group({
       title: ['', Validators.required],
@@ -48,7 +52,7 @@ export class AddProperty implements OnInit {
       isShared: [false],
       featured: [false],
       amenities: this.fb.array([]),
-      image: [null],
+      images: [null],
     });
   }
 
@@ -100,14 +104,20 @@ export class AddProperty implements OnInit {
   onImageSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.propertyForm.patchValue({ image: file });
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        this.propertyForm.patchValue({ images: [base64String] });
+      };
+      reader.readAsDataURL(file); 
     }
   }
 
   onSubmit() {
     if (this.propertyForm.valid) {
       this.homeService.addProperties(this.propertyForm.value);
-      alert('Property submitted!');
+      this.alertService.success('Property added successfully');
+      this.router.navigate(['home']);
     }
   }
 }

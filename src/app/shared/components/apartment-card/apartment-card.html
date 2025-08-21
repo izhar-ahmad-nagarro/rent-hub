@@ -1,4 +1,4 @@
-<div class="card h-100 shadow-sm" (click)="onViewDetails()">
+<div class="card h-100 shadow-sm" >
   <div class="position-relative">
     <img
       [src]="property().images[0]"
@@ -18,8 +18,8 @@
       <i
         class="fa-heart"
         [ngClass]="{
-          'fas text-danger': isFavorited,
-          'far text-muted': !isFavorited
+          'fas text-danger': property().isFavorited,
+          'far text-muted': !property().isFavorited
         }"
       ></i>
     </app-button>
@@ -85,14 +85,14 @@
       </div>
     </div>
 
-    <!-- View Details Button -->
+    <!-- Enquiry Button -->
     <app-button
-      label="View Details"
+      label="Send Enquiry"
       variant="primary"
       [size]="'sm'"
       [block]="true"
       class="mt-auto"
-      (clicked)="onViewDetails()"
+      (clicked)="sendEnquiry($event)"
     ></app-button>
   </div>
 </div>
