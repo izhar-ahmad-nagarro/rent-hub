@@ -5,11 +5,21 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => {
-      return import('./features/home/components/home/home.component').then((c) => c.HomeComponent);
-    }
+      return import('./features/home/components/home/home.component').then(
+        (c) => c.HomeComponent
+      );
+    },
   },
   {
     path: 'property/add',
+    loadComponent: () => {
+      return import(
+        './features/home/components/add-property/add-property.component'
+      ).then((c) => c.AddPropertyComponent);
+    },
+  },
+  {
+    path: 'property/edit/:id',
     loadComponent: () => {
       return import(
         './features/home/components/add-property/add-property.component'
@@ -24,5 +34,13 @@ export const routes: Routes = [
       ).then((c) => c.PropertyDetailsComponent);
     },
   },
-  { path: '**', redirectTo: '/home' }
+  {
+    path: 'my-properties',
+    loadComponent: () => {
+      return import(
+        './features/home/components/my-listings/my-listings.component'
+      ).then((c) => c.MyListingsComponent);
+    },
+  },
+  { path: '**', redirectTo: '/home' },
 ];

@@ -32,5 +32,13 @@
       class="w-100"
       [disabled]="loginForm.invalid"
     ></app-button>
+
+    <app-button
+      label="Sign Up"
+      variant="link"
+      [size]="'sm'"
+      (clicked)="signUp()"
+      [block]="true"
+    ></app-button>
   </form>
 </div>

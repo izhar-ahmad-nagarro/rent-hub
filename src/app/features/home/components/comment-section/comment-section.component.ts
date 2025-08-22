@@ -1,8 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IComment } from '../../interface';
+import { Component, effect, inject, Input, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { IComment, IUser } from '../../interface';
 import { db } from '../../../../db/app.db';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../auth';
 
 @Component({
   selector: 'app-comment-section',
@@ -13,10 +19,15 @@ import { CommonModule } from '@angular/common';
 export class CommentSectionComponent implements OnInit {
   @Input() propertyId!: number;
   comments: IComment[] = [];
-
+  activeUser: IUser | null = null;
   commentForm!: FormGroup;
-
-  constructor(private fb: FormBuilder) {}
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  constructor() {
+    effect(async () => {
+      this.activeUser = this.authService.currentUser();
+    });
+  }
 
   ngOnInit() {
     this.commentForm = this.fb.group({
@@ -36,17 +47,20 @@ export class CommentSectionComponent implements OnInit {
   async submitComment() {
     if (this.commentForm.invalid) return;
 
-    const newComment: IComment = {
-      propertyId: this.propertyId,
-      userId: 1, // Simulated logged-in user
-      userName: 'John Doe',
-      content: this.commentForm.value.message,
-      createdAt: new Date(),
-    };
-
-    await db.comments.add(newComment);
-    this.commentForm.reset();
-    this.loadComments();
+    if (!this.activeUser) {
+      this.authService.loginSubmit();
+    } else {
+      const newComment: IComment = {
+        propertyId: this.propertyId,
+        userId: this.activeUser!.id,
+        userName: this.activeUser!.name,
+        content: this.commentForm.value.content,
+        createdAt: new Date(),
+      };
+      await db.comments.add(newComment);
+      this.commentForm.reset();
+      this.loadComments();
+    }
   }
 
   getInitials(name: string): string {

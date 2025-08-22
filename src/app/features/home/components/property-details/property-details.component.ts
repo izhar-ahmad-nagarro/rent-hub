@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import {
+  IAmenities,
   IProperty,
   IUser,
   LeaseType,
@@ -34,11 +35,10 @@ import { AuthService } from '../../../auth';
 export class PropertyDetailsComponent implements OnInit {
   property?: IProperty;
   activeUser: IUser | null = null;
-  // Assuming you have enums or mappings like this somewhere
   propertyTypeEnum = PropertyType;
   leaseTypeEnum = LeaseType;
   priceModeEnum = PriceMode;
-
+  amenitiesMap: Map<number, IAmenities> = new Map();
   private propertyService = inject(PropertyService);
   private activatedRoute = inject(ActivatedRoute);
   private userQueryService = inject(UserQueryService);
@@ -51,19 +51,17 @@ export class PropertyDetailsComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log('iniy');
     if (this.activatedRoute.snapshot.params['id']) {
       this.getPropertyDetails(
         Number(this.activatedRoute.snapshot.params['id'])
       );
-      // Load property by route param or fallback logic here
+      this.getAmenitiesMap();
     }
   }
 
   private async getPropertyDetails(propertyId: number) {
-    console.log(propertyId, '>>>>>>>>>>>>>>>..');
     const property = await this.propertyService.getById(propertyId);
-    console.log(property, '>>>>>>>>>>>....');
+    console.log(property, 'propertypropertyproperty')
     if (property) {
       this.property = property;
     }
@@ -94,6 +92,10 @@ export class PropertyDetailsComponent implements OnInit {
     //     modalRef.close();
     //   }
     // );
+  }
+
+  private async getAmenitiesMap(){
+    this.amenitiesMap = await this.propertyService.getAmenitiesMap();
   }
 
   openUserQueryModal() {

@@ -1,6 +1,5 @@
 <div class="container my-4" *ngIf="property">
   <div class="row">
-    <!-- Left: Image Carousel -->
     <div class="col-md-6">
       <ngb-carousel
         *ngIf="property.images.length > 0"
@@ -55,7 +54,7 @@
       <div class="mb-3">
         <strong>Amenities:</strong>
         <ul>
-          <li *ngFor="let amenity of property.amenities">{{ amenity }}</li>
+          <li *ngFor="let amenity of property.amenities">{{ amenitiesMap.get(amenity)?.label }}</li>
         </ul>
       </div>
 
@@ -68,6 +67,7 @@
 
       <div class="mt-auto">
         <app-button
+          *ngIf="activeUser?.id !== property.ownerId"
           label="Send Enquiry"
           variant="primary"
           [size]="'sm'"

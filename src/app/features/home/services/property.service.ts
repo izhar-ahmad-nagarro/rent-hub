@@ -1,23 +1,26 @@
 import { Injectable } from '@angular/core';
 import { db } from '../../../db/app.db';
-import { IProperty } from '../interface';
+import { IAmenities, IProperty } from '../interface';
 
 @Injectable({ providedIn: 'root' })
 export class PropertyService {
   getAll(
     search: string = '',
     sort: 'asc' | 'desc' = 'asc',
-    filter: Partial<Pick<IProperty, 'type' | 'isFurnished' | 'location'>> = {}
-   ) {
-    
+    filter: Partial<
+      Pick<IProperty, 'type' | 'isFurnished' | 'location' | 'ownerId'>
+    > = {}
+  ) {
     let collection = search
       ? db.properties.where('title').startsWithIgnoreCase(search)
       : db.properties.toCollection();
-
     collection = collection.filter((property) => {
       for (const key in filter) {
         if (filter[key as keyof typeof filter] !== undefined) {
-          if (property[key as keyof typeof filter] !== filter[key as keyof typeof filter]) {
+          if (
+            property[key as keyof typeof filter] !==
+            filter[key as keyof typeof filter]
+          ) {
             return false;
           }
         }
@@ -28,7 +31,7 @@ export class PropertyService {
     if (sort === 'asc') {
       return collection.sortBy('expectedRent');
     } else {
-      return collection.sortBy('expectedRent').then(arr => arr.reverse());
+      return collection.sortBy('expectedRent').then((arr) => arr.reverse());
     }
   }
 
@@ -44,7 +47,7 @@ export class PropertyService {
     return db.properties.update(id, changes);
   }
 
-  put(property:IProperty) {
+  put(property: IProperty) {
     return db.properties.put(property);
   }
 
@@ -58,5 +61,12 @@ export class PropertyService {
 
   getAmenities() {
     return db.amenities.toArray();
+  }
+
+  async getAmenitiesMap() {
+    const amenityMap = new Map<number, IAmenities>(
+     (await this.getAmenities()).map(a => [a.id, a])
+    );
+    return amenityMap;
   }
 }

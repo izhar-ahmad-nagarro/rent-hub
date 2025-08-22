@@ -1,16 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { PropertyService } from '../../services';
-import { ButtonComponent, LeaseType, PriceMode, PropertyType } from '../../../../shared';
+import {
+  ButtonComponent,
+  IUser,
+  LeaseType,
+  PriceMode,
+  PropertyType,
+} from '../../../../shared';
 import { AlertService } from '../../../../shared/services/alert.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../auth';
 
 @Component({
   selector: 'app-add-property',
@@ -25,9 +33,13 @@ export class AddPropertyComponent implements OnInit {
     label: string;
     value: number;
   }> = [];
+  activeUser: IUser | null = null;
   private fb = inject(FormBuilder);
   private propertyService = inject(PropertyService);
   private alertService = inject(AlertService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
   propertyTypes: Array<{
     label: string;
     value: number;
@@ -36,8 +48,10 @@ export class AddPropertyComponent implements OnInit {
     label: string;
     value: number;
   }> = [];
-  private router = inject(Router);
   constructor() {
+    effect(async () => {
+      this.activeUser = this.authService.currentUser();
+    });
     this.propertyForm = this.fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -57,9 +71,11 @@ export class AddPropertyComponent implements OnInit {
   }
 
   get imageArray() {
-    return this.propertyForm.get(
-      'images'
-    ) as FormArray;
+    return this.propertyForm.get('images') as FormArray;
+  }
+
+  get amenitiesArray() {
+    return this.propertyForm.get('amenities') as FormArray;
   }
 
   isInvalid(controlName: string): boolean {
@@ -69,29 +85,28 @@ export class AddPropertyComponent implements OnInit {
   ngOnInit(): void {
     setTimeout(() => this.getEnumData());
     this.getAmenities();
+    this.getPropertyDetailsInEdit();
   }
+
   onAmenityChange(event: any) {
-    const amenities: FormArray = this.propertyForm.get(
-      'amenities'
-    ) as FormArray;
     if (event.target.checked) {
-      amenities.push(this.fb.control(event.target.value));
+      this.amenitiesArray.push(this.fb.control(Number(event.target.value)));
     } else {
-      const index = amenities.controls.findIndex(
+      const index = this.amenitiesArray.controls.findIndex(
         (x) => x.value === event.target.value
       );
-      amenities.removeAt(index);
+      this.amenitiesArray.removeAt(index);
     }
   }
 
-  removeImage(index: number){
+  removeImage(index: number) {
     this.imageArray.removeAt(index);
   }
 
   onImageSelected(event: any) {
     console.log(event.target.files);
     const files = event.target.files;
-    for(let file of files){
+    for (let file of files) {
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
@@ -104,11 +119,24 @@ export class AddPropertyComponent implements OnInit {
     event.target.value = '';
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.propertyForm.valid) {
-      this.propertyService.add(this.propertyForm.value);
-      this.alertService.success('Property added successfully');
-      this.router.navigate(['home']);
+      const propId = Number(this.activatedRoute.snapshot.params['id']);
+      if (!isNaN(propId)) {
+        await this.propertyService.update(propId, {
+          ...this.propertyForm.value,
+          ownerId: this.activeUser!.id,
+        });
+        this.alertService.success('Property updated successfully');
+      } else {
+        await this.propertyService.add({
+          ...this.propertyForm.value,
+          ownerId: this.activeUser!.id,
+        });
+        this.alertService.success('Property added successfully');
+      }
+
+      this.router.navigate(['my-properties']);
     }
   }
 
@@ -139,5 +167,34 @@ export class AddPropertyComponent implements OnInit {
         label: key,
         value: PropertyType[key as keyof typeof PropertyType],
       }));
+  }
+
+  private async getPropertyDetailsInEdit() {
+    const propertyId = Number(this.activatedRoute.snapshot.params['id']);
+    if (!isNaN(propertyId)) {
+      const property = await this.propertyService.getById(propertyId);
+      if (property) {
+        this.propertyForm.patchValue({
+          title: property.title,
+          description: property.description,
+          ownerName: property.ownerName,
+          location: property.location,
+          size: property.size,
+          expectedRent: property.expectedRent,
+          leaseType: property.leaseType,
+          priceMode: property.priceMode,
+          type: property.type,
+          isFurnished: property.isFurnished,
+          isShared: property.isShared,
+          featured: property.featured,
+        });
+        property.amenities.forEach((id) =>
+          this.amenitiesArray.push(new FormControl(id))
+        );
+        property.images.forEach((img) =>
+          this.imageArray.push(new FormControl(img))
+        );
+      }
+    }
   }
 }

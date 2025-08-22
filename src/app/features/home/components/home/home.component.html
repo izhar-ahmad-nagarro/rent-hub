@@ -21,11 +21,12 @@
         class="col-md-4 mb-4"
       >
         <app-apartment-card 
+        [activeUser]="activeUser"
         [property]="property" 
         (togglefavClick)="togglefavClick($event)" 
         [favorites]="favorites()"
         (sendEnquiryClick)="sendEnquiry($event)"
-        
+        [amenitiesMap]="amenities"
         ></app-apartment-card>
       </div>
     </div>
@@ -39,10 +40,12 @@
         class="col-md-4 mb-4"
       >
         <app-apartment-card 
+        [activeUser]="activeUser"
         [property]="property" 
         (togglefavClick)="togglefavClick($event)" 
         [favorites]="favorites()"
         (sendEnquiryClick)="sendEnquiry($event)"
+        [amenitiesMap]="amenities"
         ></app-apartment-card>
       </div>
     </div>

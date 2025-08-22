@@ -67,7 +67,7 @@
         *ngFor="let am of property().amenities.slice(0, 3)"
         class="badge bg-light text-dark small"
       >
-        {{ am }}
+        {{ amenitiesMap.get(am)?.label }}
       </span>
       <span
         *ngIf="property().amenities.length > 3"
@@ -87,6 +87,7 @@
 
     <!-- Enquiry Button -->
     <app-button
+      *ngIf="activeUser()?.id !== property().ownerId"
       label="Send Enquiry"
       variant="primary"
       [size]="'sm'"

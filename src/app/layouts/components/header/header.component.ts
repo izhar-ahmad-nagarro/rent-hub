@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { ButtonComponent, IUser } from '../../../shared';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../features';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchService } from '../../../features/home/services';
@@ -24,6 +24,7 @@ import { AlertService } from '../../../shared/services/alert.service';
     CommonModule,
     NgbDropdownModule,
     RouterModule,
+    NgbNavModule,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -34,7 +35,6 @@ export class HeaderComponent {
   private router = inject(Router);
   searchService = inject(SearchService);
   currentUrl = signal<string>('');
-  private alertService = inject(AlertService);
   isHomePage = computed(() => this.currentUrl() === '/home');
   constructor() {
     this.router.events
@@ -51,15 +51,15 @@ export class HeaderComponent {
     this.authService.loginSubmit();
   }
 
-  async signUp() {
-    this.authService.signupSubmit().subscribe();
-  }
-
   logout() {
     this.authService.logout();
   }
 
   postProperty() {
     this.router.navigate(['/property/add']);
+  }
+
+  navigateToMyListings() {
+    this.router.navigate(['/my-properties'])
   }
 }

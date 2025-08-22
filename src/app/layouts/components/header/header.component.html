@@ -1,54 +1,79 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-4">
+<nav
+  class="navbar navbar-expand-sm navbar-light bg-light px-3 px-md-4 shadow-sm sticky-top"
+>
   <div class="container-fluid">
-    <a class="navbar-brand fw-bold" [routerLink]="['home']">
-      <span>
-        <i class="fa-solid fa-house"></i>
-      </span>
-      <span>Rent Hub</span></a
+    <!-- Brand -->
+    <a
+      class="navbar-brand fw-bold d-flex align-items-center"
+      [routerLink]="['/']"
     >
+      <i class="fa-solid fa-house me-2"></i> Rent Hub
+    </a>
 
-    <div class="input-group w-50" *ngIf="isHomePage">
-      <span class="input-group-text bg-white border-end-0">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </span>
-      <input
-        type="text"
-        [value]="searchService.searchTerm()"
-        (input)="searchService.searchTerm.set($any($event.target).value)"
-        class="form-control border-start-0"
-        placeholder="Search properties..."
-        aria-label="Search"
-      />
-    </div>
+    <!-- Toggler for mobile -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <div class="d-flex justify-content-between gap-3">
-      <ng-container *ngIf="!authService.isLoggedIn()">
-        <app-button
-          label="Login"
-          variant="primary"
-          [size]="'sm'"
-          (clicked)="login()"
-        ></app-button>
-        <app-button
-          label="Sign Up"
-          variant="primary-outline"
-          [size]="'sm'"
-          (clicked)="signUp()"
-        ></app-button>
-      </ng-container>
-      <ng-container *ngIf="authService.isLandLord()">
-        <app-button
-          label="Post Property"
-          variant="primary"
-          (clicked)="postProperty()"
-          icon="fa-solid fa-plus"
-        ></app-button>
-      </ng-container>
-      <ng-container *ngIf="authService.isLoggedIn()">
-        <div class="d-flex align-items-center justify-content-end">
-          <div ngbDropdown placement="bottom-end" class="dropdown">
+    <!-- Collapsible Section -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Search bar on homepage -->
+      <div *ngIf="isHomePage" class="mx-auto my-2 my-lg-0">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
+          <input
+            type="text"
+            [value]="searchService.searchTerm()"
+            (input)="searchService.searchTerm.set($any($event.target).value)"
+            class="form-control border-start-0"
+            placeholder="Search properties..."
+            aria-label="Search"
+          />
+        </div>
+      </div>
+
+      <!-- Right-aligned buttons -->
+      <div
+        class="ms-auto d-flex flex-column flex-sm-row align-items-start align-items-lg-center gap-2 mt-lg-0"
+      >
+
+        <ng-container *ngIf="!authService.isLoggedIn()">
+          <app-button
+            label="Login"
+            variant="primary"
+            [size]="'sm'"
+            class="w-100"
+            (clicked)="login()"
+            [block]="true"
+          ></app-button>
+        </ng-container>
+
+        <!-- Authenticated -->
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <!-- Post Property (Landlord Only) -->
+          <ng-container *ngIf="authService.isLandLord()">
+            <app-button
+              label="Post Property"
+              variant="primary"
+              (clicked)="postProperty()"
+              icon="fa-solid fa-plus"
+            ></app-button>
+          </ng-container>
+
+          <!-- User Dropdown -->
+          <div ngbDropdown placement="bottom-end" class="dropdown col-12">
             <button
-              class="btn btn-outline-secondary"
+              class="btn btn-outline-secondary col-12"
               id="profileDropdown"
               ngbDropdownToggle
             >
@@ -57,7 +82,7 @@
             <div
               ngbDropdownMenu
               aria-labelledby="profileDropdown"
-              class="dropdown-menu-end"
+              class="dropdown-menu-end col-12"
             >
               <div class="dropdown-item-text">
                 <strong>{{ authService.currentUser()?.name }}</strong
@@ -68,17 +93,27 @@
               </div>
               <div class="dropdown-divider"></div>
               <app-button
-                class="dropdown-item"
+                class="dropdown-item bg-transparent"
+                variant="link"
+                label="My Listings"
+                (clicked)="navigateToMyListings()"
+                [btnClasses]="['text-decoration-none']"
+              >
+                <i class="fas fa-list me-2"></i>
+              </app-button>
+              <app-button
+                class="dropdown-item bg-transparent"
                 variant="link"
                 label="Logout"
                 (clicked)="logout()"
                 [btnClasses]="['text-decoration-none']"
-                ><i class="fas fa-sign-out-alt me-2"></i
-              ></app-button>
+              >
+                <i class="fas fa-sign-out-alt me-2"></i>
+              </app-button>
             </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
     </div>
   </div>
 </nav>

@@ -5,10 +5,8 @@
     No comments yet. Be the first to ask or share something!
   </div>
 
-  <!-- List of comments -->
   <div *ngFor="let comment of comments" class="mb-3 border-bottom pb-2">
     <div class="d-flex align-items-start">
-      <!-- Avatar or initials -->
       <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3"
            style="width: 40px; height: 40px; font-size: 1rem;">
         {{ getInitials(comment.userName) }}
@@ -16,7 +14,7 @@
 
       <div>
         <strong>{{ comment.userName }}</strong>
-        <div class="text-muted small">{{ comment.createdAt | date:'short' }}</div>
+        <div class="text-muted small">{{ comment.createdAt | date:'medium' }}</div>
         <p class="mt-1 mb-0">{{ comment.content }}</p>
       </div>
     </div>
@@ -30,11 +28,10 @@
         placeholder="Write a comment..."
         id="commentInput"
         style="height: 100px"
-        formControlName="message"
+        formControlName="content"
       ></textarea>
       <label for="commentInput">add comment</label>
     </div>
-
     <button type="submit" class="btn btn-primary" [disabled]="commentForm.invalid">
       Post Comment
     </button>

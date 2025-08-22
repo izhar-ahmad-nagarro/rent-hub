@@ -11,8 +11,9 @@ export interface IProperty {
     expectedRent: number;
     priceMode: PriceMode;
     isFurnished: boolean;
-    amenities: Array<string>;
+    amenities: Array<number>;
     images: Array<string>;
+    ownerId:number;
     featured?: boolean;
     isFavorited?: boolean;
 }

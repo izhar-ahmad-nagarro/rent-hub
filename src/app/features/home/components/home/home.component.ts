@@ -3,9 +3,10 @@ import {
   Component,
   effect,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
-import { ApartmentCardComponent, IUser } from '../../../../shared';
+import { ApartmentCardComponent, IAmenities, IUser } from '../../../../shared';
 import { IProperty } from '../../interface/property.interface';
 import { CommonModule } from '@angular/common';
 import {
@@ -13,10 +14,8 @@ import {
   SearchService,
   UserFavoritesService,
 } from '../../services';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../auth';
 import { UserQueryService } from '../../services/user-query.service';
-import { AlertService } from '../../../../shared/services/alert.service';
 
 @Component({
   selector: 'app-home',
@@ -26,20 +25,22 @@ import { AlertService } from '../../../../shared/services/alert.service';
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit{
   properties = signal<IProperty[]>([]);
   featuredProperties = signal<IProperty[]>([]);
   favorites = signal<Map<number, number>>(new Map());
-
+  amenities: Map<number, IAmenities> = new Map();
   private userFavoriteService = inject(UserFavoritesService);
   private authService = inject(AuthService);
   private propertyService = inject(PropertyService);
   private searchService = inject(SearchService);
   private userQueryService = inject(UserQueryService);
-
+  
   activeUser: IUser | null = null;
 
-  private readonly modalService = inject(NgbModal);
+  ngOnInit(): void {
+    this.getAmenitiesMap();
+  }
 
   constructor() {
     effect(async () => {
@@ -62,6 +63,10 @@ export class HomeComponent {
         this.favorites.set(new Map());
       }
     });
+  }
+
+  async getAmenitiesMap() {
+    this.amenities = await this.propertyService.getAmenitiesMap();
   }
 
   async togglefavClick(payload: IProperty) {

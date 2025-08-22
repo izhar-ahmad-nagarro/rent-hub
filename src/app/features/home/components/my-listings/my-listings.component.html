@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <h2 class="mb-4">My Property Listings</h2>
+
+  <div *ngIf="properties().length === 0" class="alert alert-info">
+    You haven’t listed any properties yet.
+  </div>
+
+  <div class="row">
+    <div *ngFor="let property of properties()" class="col-md-4 mb-4">
+      <div class="card h-100 shadow-sm position-relative">
+        <app-apartment-card
+          [activeUser]="activeUser"
+          [property]="property"
+          (togglefavClick)="togglefavClick($event)"
+          [favorites]="favorites()"
+          [amenitiesMap]="amenities"
+        ></app-apartment-card>
+
+        <!-- Edit/Delete Buttons -->
+        <div class="position-absolute bottom-0 end-0 m-2 d-flex gap-2">
+          <button
+            class="btn btn-sm btn-outline-primary"
+            (click)="editProperty(property)"
+          >
+            <i class="fas fa-edit"></i>
+          </button>
+          <button
+            class="btn btn-sm btn-outline-danger"
+            (click)="deleteProperty(property)"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

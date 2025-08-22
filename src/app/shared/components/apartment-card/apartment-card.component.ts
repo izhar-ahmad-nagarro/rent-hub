@@ -8,6 +8,7 @@ import {
   SimpleChanges,
   ChangeDetectionStrategy,
   inject,
+  Input,
 } from '@angular/core';
 import {
   IProperty,
@@ -16,6 +17,7 @@ import {
 } from '../../../features/home/interface/property.interface';
 import { ButtonComponent } from '../button/button.component';
 import { Router } from '@angular/router';
+import { IAmenities, IUser } from '../../../features';
 
 @Component({
   selector: 'app-apartment-card',
@@ -25,20 +27,24 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApartmentCardComponent implements OnChanges {
-  favorites = input.required<Map<unknown, unknown>>();
+  favorites = input<Map<unknown, unknown>>();
   property = input.required<IProperty>();
+
+  activeUser = input<IUser | null>();
   @Output() viewDetails = new EventEmitter<any>();
   @Output() togglefavClick = new EventEmitter<any>();
   @Output() sendEnquiryClick = new EventEmitter<any>();
 
-  private router = inject(Router);
+  @Input() amenitiesMap: Map<number, IAmenities> = new Map();
 
+  private router = inject(Router);
   propertyTypeEnum = PropertyType;
   priceModeEnum = PriceMode;
 
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['favorites']) {
-      this.property().isFavorited = !!this.favorites().get(this.property().id);
+      this.property().isFavorited = !!this.favorites()?.get(this.property().id);
     }
   }
 
