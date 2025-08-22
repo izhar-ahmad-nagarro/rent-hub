@@ -13,12 +13,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Button, IProperty, IUser } from '../../../../shared';
+import { ButtonComponent, IProperty, IUser } from '../../../../shared';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-send-enquiry',
-  imports: [ReactiveFormsModule, Button, CommonModule],
+  imports: [ReactiveFormsModule, ButtonComponent, CommonModule],
   templateUrl: './send-enquiry.component.html',
   styleUrl: './send-enquiry.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -14,17 +14,17 @@ import {
   PriceMode,
   PropertyType,
 } from '../../../features/home/interface/property.interface';
-import { Button } from '../button/button';
+import { ButtonComponent } from '../button/button.component';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-apartment-card',
-  imports: [CommonModule, Button],
-  templateUrl: './apartment-card.html',
-  styleUrls: ['./apartment-card.scss'],
+  imports: [CommonModule, ButtonComponent],
+  templateUrl: './apartment-card.component.html',
+  styleUrls: ['./apartment-card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ApartmentCard implements OnChanges {
+export class ApartmentCardComponent implements OnChanges {
   favorites = input.required<Map<unknown, unknown>>();
   property = input.required<IProperty>();
   @Output() viewDetails = new EventEmitter<any>();

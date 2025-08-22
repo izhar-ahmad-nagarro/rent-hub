@@ -5,15 +5,15 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => {
-      return import('./features/home/components/home/home').then((c) => c.Home);
+      return import('./features/home/components/home/home.component').then((c) => c.HomeComponent);
     }
   },
   {
     path: 'property/add',
     loadComponent: () => {
       return import(
-        './features/home/components/add-property/add-property'
-      ).then((c) => c.AddProperty);
+        './features/home/components/add-property/add-property.component'
+      ).then((c) => c.AddPropertyComponent);
     },
   },
   {

@@ -4,11 +4,11 @@ import { ChangeDetectionStrategy, Component, EventEmitter, input, Input, Output 
 @Component({
   selector: 'app-button',
   imports: [CommonModule],
-  templateUrl: './button.html',
-  styleUrl: './button.scss',
+  templateUrl: './button.component.html',
+  styleUrl: './button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Button {
+export class ButtonComponent {
   @Input() label: string = '';
   @Input() variant: string = 'primary'; // e.g. 'primary', 'outline-success'
   @Input() size: 'sm' | 'lg' | '' = ''; // Bootstrap sizes

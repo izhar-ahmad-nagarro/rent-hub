@@ -17,7 +17,7 @@ export class AlertService {
     const newAlert: IAlert = { id, type, message };
     this.alertsSignal.update((alerts) => [...alerts, newAlert]);
 
-    // setTimeout(() => this.dismiss(id), 5000);
+    setTimeout(() => this.dismiss(id), 5000);
   }
 
   success(msg: string) {

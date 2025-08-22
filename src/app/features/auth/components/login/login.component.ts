@@ -1,15 +1,15 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Button } from '../../../../shared';
+import { ButtonComponent } from '../../../../shared';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, Button],
-  templateUrl: './login.html',
-  styleUrl: './login.scss'
+  imports: [ReactiveFormsModule, ButtonComponent],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
-export class Login {
+export class LoginComponent {
   private fb = inject(FormBuilder);
   private activeModal = inject(NgbActiveModal);
   loginForm: FormGroup;

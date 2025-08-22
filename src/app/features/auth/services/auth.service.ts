@@ -3,6 +3,10 @@ import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { of } from 'rxjs/internal/observable/of';
 import { IUser, UserRole } from '../../home/interface';
 import { db } from '../../../db/app.db';
+import { LoginSignupModalService } from './login-signup-modal.service';
+import { AlertService } from '../../../shared/services/alert.service';
+import { map, Observable } from 'rxjs';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +15,9 @@ export class AuthService {
   private readonly storageKey = 'users';
   private readonly currentUserStorageKey = 'currentUser';
   private readonly http = inject(HttpClient);
-
+  private loginSignupModalService = inject(LoginSignupModalService);
+  private alertService = inject(AlertService);
+  
   // Signal for current user state
   private _currentUser = signal<IUser | null>(this.loadUserFromStorage());
 
@@ -52,6 +58,32 @@ export class AuthService {
     }
     db.users.add(user);
     return { success: true, message: 'user added successfully' };
+  }
+
+  async loginSubmit() {
+    const result = await this.loginSignupModalService.openLogin();
+    const user = await this.loginUser(result);
+    if (!user) {
+      this.alertService.error('Invalid email or password');
+    }
+    return user;
+  }
+
+  signupSubmit(): Observable<unknown> {
+    const modalRef = this.loginSignupModalService.openSignup();
+    return modalRef.componentInstance.signupUser.pipe(map(async (res: IUser) => {
+      this.signup(res, modalRef)
+    }));
+  }
+
+  async signup(user: IUser, modalRef: NgbModalRef) {
+    const result = await this.saveUser(user);
+      if (result.success) {
+        this.alertService.success(result.message);
+        modalRef.close();
+      } else {
+        this.alertService.error(result.message);
+      }
   }
 
   async loginUser(payload: { email: string; password: string }) {

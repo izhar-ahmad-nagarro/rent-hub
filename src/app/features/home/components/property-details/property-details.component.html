@@ -67,9 +67,14 @@
       <div class="mb-3"><strong>Owner:</strong> {{ property.ownerName }}</div>
 
       <div class="mt-auto">
-        <button class="btn btn-primary w-100" (click)="sendEnquiry()">
-          Send Enquiry
-        </button>
+        <app-button
+          label="Send Enquiry"
+          variant="primary"
+          [size]="'sm'"
+          [block]="true"
+          class="mt-auto"
+          (clicked)="sendEnquiry($event)"
+        ></app-button>
       </div>
     </div>
   </div>
@@ -77,5 +82,4 @@
   <!-- Comments Section -->
   <hr />
   <app-comment-section [propertyId]="property.id"></app-comment-section>
-  <!-- <app-comments [propertyId]="propertyd"></app-comments> -->
 </div>

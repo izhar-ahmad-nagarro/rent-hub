@@ -6,9 +6,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { Button, IUser } from '../../../shared';
+import { ButtonComponent, IUser } from '../../../shared';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { LoginSignupModal } from '../../../features/auth/services/login-signup-modal';
 import { AuthService } from '../../../features';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchService } from '../../../features/home/services';
@@ -20,19 +19,18 @@ import { AlertService } from '../../../shared/services/alert.service';
 @Component({
   selector: 'app-header',
   imports: [
-    Button,
+    ButtonComponent,
     ReactiveFormsModule,
     CommonModule,
     NgbDropdownModule,
     RouterModule,
   ],
-  templateUrl: './header.html',
-  styleUrl: './header.scss',
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Header {
+export class HeaderComponent {
   authService = inject(AuthService);
-  private loginSignupModal = inject(LoginSignupModal);
   private router = inject(Router);
   searchService = inject(SearchService);
   currentUrl = signal<string>('');
@@ -50,24 +48,11 @@ export class Header {
   }
 
   async login() {
-    const result = await this.loginSignupModal.openLogin();
-    const user = await this.authService.loginUser(result);
-    if (!user) {
-      this.alertService.error('Invalid email or password');
-    }
+    this.authService.loginSubmit();
   }
 
   async signUp() {
-    const modalRef = await this.loginSignupModal.openSignup();
-    modalRef.componentInstance.signupUser.subscribe(async (res: IUser) => {
-      const result = await this.authService.saveUser(res);
-      if (result.success) {
-        this.alertService.success(result.message);
-        modalRef.close();
-      } else {
-        this.alertService.error(result.message);
-      }
-    });
+    this.authService.signupSubmit().subscribe();
   }
 
   logout() {

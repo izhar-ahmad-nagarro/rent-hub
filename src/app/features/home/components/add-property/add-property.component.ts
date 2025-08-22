@@ -8,17 +8,17 @@ import {
   Validators,
 } from '@angular/forms';
 import { PropertyService } from '../../services';
-import { Button, LeaseType, PriceMode, PropertyType } from '../../../../shared';
+import { ButtonComponent, LeaseType, PriceMode, PropertyType } from '../../../../shared';
 import { AlertService } from '../../../../shared/services/alert.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-property',
-  imports: [ReactiveFormsModule, CommonModule, Button],
-  templateUrl: './add-property.html',
-  styleUrl: './add-property.scss',
+  imports: [ReactiveFormsModule, CommonModule, ButtonComponent],
+  templateUrl: './add-property.component.html',
+  styleUrl: './add-property.component.scss',
 })
-export class AddProperty implements OnInit {
+export class AddPropertyComponent implements OnInit {
   propertyForm: FormGroup;
   amenitiesList: Array<any> = [];
   priceMode: Array<{
@@ -52,8 +52,14 @@ export class AddProperty implements OnInit {
       isShared: [false],
       featured: [false],
       amenities: this.fb.array([]),
-      images: [null],
+      images: this.fb.array([]),
     });
+  }
+
+  get imageArray() {
+    return this.propertyForm.get(
+      'images'
+    ) as FormArray;
   }
 
   isInvalid(controlName: string): boolean {
@@ -78,16 +84,24 @@ export class AddProperty implements OnInit {
     }
   }
 
+  removeImage(index: number){
+    this.imageArray.removeAt(index);
+  }
+
   onImageSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const base64String = reader.result as string;
-        this.propertyForm.patchValue({ images: [base64String] });
-      };
-      reader.readAsDataURL(file);
+    console.log(event.target.files);
+    const files = event.target.files;
+    for(let file of files){
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const base64String = reader.result as string;
+          this.imageArray.push(this.fb.control(base64String));
+        };
+        reader.readAsDataURL(file);
+      }
     }
+    event.target.value = '';
   }
 
   onSubmit() {

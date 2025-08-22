@@ -7,16 +7,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgbActiveModal, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { Button, UserRole } from '../../../../shared';
+import { ButtonComponent, UserRole } from '../../../../shared';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [ReactiveFormsModule, CommonModule, Button, NgbDropdownModule],
-  templateUrl: './sign-up.html',
-  styleUrl: './sign-up.scss',
+  imports: [ReactiveFormsModule, CommonModule, ButtonComponent, NgbDropdownModule],
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignUp {
+export class SignUpComponent {
   signupForm: FormGroup;
   userRoles = UserRole;
   private readonly activeModal = inject(NgbActiveModal);
