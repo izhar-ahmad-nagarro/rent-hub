@@ -1,14 +1,14 @@
-<div class="container my-4" *ngIf="property">
+<div class="container my-4" *ngIf="property()">
   <div class="row">
     <div class="col-md-6">
       <ngb-carousel
-        *ngIf="property.images.length > 0"
+        *ngIf="property()!.images.length > 0"
         [showNavigationArrows]="true"
         [showNavigationIndicators]="true"
       >
         <ng-template
           ngbSlide
-          *ngFor="let img of property.images; let i = index"
+          *ngFor="let img of property()?.images; let i = index"
         >
           <img
             [src]="img"
@@ -22,31 +22,31 @@
 
     <!-- Right: Property Details -->
     <div class="col-md-6 d-flex flex-column">
-      <h1>{{ property.title }}</h1>
+      <h1>{{ property()?.title }}</h1>
       <h3 class="text-primary">
-        {{ property.expectedRent | currency : "INR" }}/month
+        {{ property()?.expectedRent | currency : "INR" }}/month
       </h3>
       <p class="text-muted">
-        {{ propertyTypeEnum[property.type] }} |
-        {{ leaseTypeEnum[property.leaseType] }}
+        {{ propertyTypeEnum[property()!.type] }} |
+        {{ leaseTypeEnum[property()!.leaseType] }}
       </p>
 
-      <div class="mb-3"><strong>Location:</strong> {{ property.location }}</div>
+      <div class="mb-3"><strong>Location:</strong> {{ property()?.location }}</div>
 
-      <div class="mb-3"><strong>Size:</strong> {{ property.size }}</div>
+      <div class="mb-3"><strong>Size:</strong> {{ property()?.size }}</div>
 
       <div class="mb-3">
-        <strong>Price Mode:</strong> {{ priceModeEnum[property.priceMode] }}
+        <strong>Price Mode:</strong> {{ priceModeEnum[property()!.priceMode] }}
       </div>
 
       <div class="mb-3 d-flex align-items-center gap-2">
-        <span *ngIf="property.isFurnished" class="badge bg-success"
+        <span *ngIf="property()?.isFurnished" class="badge bg-success"
           >Furnished</span
         >
-        <span *ngIf="property.isShared" class="badge bg-info text-dark"
+        <span *ngIf="property()?.isShared" class="badge bg-info text-dark"
           >Shared</span
         >
-        <span *ngIf="property.featured" class="badge bg-warning text-dark"
+        <span *ngIf="property()?.featured" class="badge bg-warning text-dark"
           >Featured</span
         >
       </div>
@@ -54,7 +54,7 @@
       <div class="mb-3">
         <strong>Amenities:</strong>
         <ul>
-          <li *ngFor="let amenity of property.amenities">
+          <li *ngFor="let amenity of property()?.amenities">
             {{ amenitiesMap.get(amenity)?.label }}
           </li>
         </ul>
@@ -62,14 +62,14 @@
 
       <div class="mb-3">
         <strong>Description:</strong>
-        <p>{{ property.description }}</p>
+        <p>{{ property()?.description }}</p>
       </div>
 
-      <div class="mb-3"><strong>Owner:</strong> {{ property.ownerName }}</div>
+      <div class="mb-3"><strong>Owner:</strong> {{ property()?.ownerName }}</div>
 
       <div class="mt-auto">
         <app-button
-          *ngIf="activeUser?.id !== property.ownerId"
+          *ngIf="activeUser?.id !== property()?.ownerId"
           label="Send Enquiry"
           variant="primary"
           [size]="'sm'"
@@ -83,15 +83,15 @@
 
   <!-- Comments Section -->
   <hr />
-  <app-comment-section [propertyId]="property.id"></app-comment-section>
+  <app-comment-section [propertyId]="property()?.id"></app-comment-section>
   <ng-container *ngIf="authService.isLoggedIn()">
     <app-landlord-queries
-      [propertyId]="property.id"
+      [propertyId]="property()?.id"
       [currentUserId]="activeUser?.id"
-      [ownerId]="property.ownerId"
-      *ngIf="authService.isLandLord() && activeUser?.id === property.ownerId"
+      [ownerId]="property()?.ownerId"
+      *ngIf="authService.isLandLord() && activeUser?.id === property()?.ownerId"
     ></app-landlord-queries>
-    <app-renter-queries *ngIf="!authService.isLandLord()" [propertyId]="property.id"
+    <app-renter-queries *ngIf="!authService.isLandLord()" [propertyId]="property()?.id"
       [currentUserId]="activeUser?.id"></app-renter-queries>
   </ng-container>
 </div>

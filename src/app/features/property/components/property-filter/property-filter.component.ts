@@ -6,10 +6,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { PropertyService } from '../../services';
-import { IPropertyFilter, PriceMode, PropertyType } from '../../interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { PropertyService } from '../../services';
+import { IPropertyFilter, PriceMode, PropertyType } from '../../interface';
 
 @Component({
   selector: 'app-property-filter',

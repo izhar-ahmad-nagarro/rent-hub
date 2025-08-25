@@ -1,10 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { db } from '../../../db/app.db';
-import { IProperty, IUser, IUserQuery } from '../interface';
+import { IUserQuery } from '../interface';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SendEnquiryComponent } from '../components';
 import { map, Observable } from 'rxjs';
 import { AlertService } from '../../../shared/services/alert.service';
+import { IProperty } from '../../property/interface';
+import { IUser } from '../../auth';
 
 @Injectable({
   providedIn: 'root',

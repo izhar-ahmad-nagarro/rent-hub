@@ -11,36 +11,18 @@ export const routes: Routes = [
     },
   },
   {
-    path: 'property/add',
-    loadComponent: () => {
-      return import(
-        './features/home/components/add-property/add-property.component'
-      ).then((c) => c.AddPropertyComponent);
-    },
+    path: 'property',
+    loadChildren: () =>
+      import('./features/property/property.routes').then(
+        (m) => m.PROPERTY_ROUTES
+      ),
   },
   {
-    path: 'property/edit/:id',
-    loadComponent: () => {
-      return import(
-        './features/home/components/add-property/add-property.component'
-      ).then((c) => c.AddPropertyComponent);
-    },
-  },
-  {
-    path: 'property/details/:id',
-    loadComponent: () => {
-      return import(
-        './features/home/components/property-details/property-details.component'
-      ).then((c) => c.PropertyDetailsComponent);
-    },
-  },
-  {
-    path: 'my-properties',
-    loadComponent: () => {
-      return import(
-        './features/home/components/my-listings/my-listings.component'
-      ).then((c) => c.MyListingsComponent);
-    },
+    path: 'landlord',
+    loadChildren: () =>
+      import('./features/landlord/landlord.routes').then(
+        (m) => m.LANDLORD_ROUTES
+      ),
   },
   { path: '**', redirectTo: '/home' },
 ];

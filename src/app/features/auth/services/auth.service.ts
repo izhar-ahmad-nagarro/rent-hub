@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { of } from 'rxjs/internal/observable/of';
-import { IUser, UserRole } from '../../home/interface';
 import { db } from '../../../db/app.db';
 import { LoginSignupModalService } from './login-signup-modal.service';
 import { AlertService } from '../../../shared/services/alert.service';
 import { map, Observable } from 'rxjs';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { IUser, UserRole } from '../interface';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +31,9 @@ export class AuthService {
     () => this._currentUser()?.role === UserRole.LandLord
   );
 
+  readonly currentUserRole = computed(
+    () => this._currentUser()?.role
+  );
   constructor() {
     effect(() => {
       const user = this._currentUser();
@@ -47,9 +50,7 @@ export class AuthService {
   }
 
   async saveUser(user: IUser) {
-    console.log('userrr', user);
     const existingUser = (await db.users.where('email').equalsIgnoreCase(user.email).toArray())?.[0];
-    console.log(existingUser, 'existingUserexistingUser')
     if (existingUser) {
       return {
         success: false,

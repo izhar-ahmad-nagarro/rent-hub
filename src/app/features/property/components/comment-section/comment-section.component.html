@@ -1,11 +1,11 @@
 <div class="mt-5">
-  <h5 class="mb-3">Comments ({{ comments.length }})</h5>
+  <h5 class="mb-3">Comments ({{ comments().length }})</h5>
 
-  <div *ngIf="comments.length === 0" class="text-muted mb-3">
+  <div *ngIf="comments().length === 0" class="text-muted mb-3">
     No comments yet. Be the first to ask or share something!
   </div>
 
-  <div *ngFor="let comment of comments" class="mb-3 border-bottom pb-2">
+  <div *ngFor="let comment of comments()" class="mb-3 border-bottom pb-2">
     <div class="d-flex align-items-start">
       <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3"
            style="width: 40px; height: 40px; font-size: 1rem;">

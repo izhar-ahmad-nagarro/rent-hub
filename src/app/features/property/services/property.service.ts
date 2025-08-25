@@ -2,12 +2,8 @@ import { Injectable, signal } from '@angular/core';
 import { db } from '../../../db/app.db';
 import {
   IAmenities,
-  IProperty,
-  IPropertyFilter,
-  LeaseType,
-  PriceMode,
-  PropertyType,
-} from '../interface';
+} from '../../home/interface';
+import { IProperty, IPropertyFilter, LeaseType, PriceMode, PropertyType } from '../interface';
 
 @Injectable({ providedIn: 'root' })
 export class PropertyService {
@@ -41,8 +37,6 @@ export class PropertyService {
 
       for (const key in filter || {}) {
         const filterValue = filter[key as keyof typeof filter];
-        console.log(filterValue, 'filterValue')
-        // Skip undefined/null filters
         if (filterValue != null) {
           const propertyValue = property[key as keyof typeof filter];
           if (propertyValue !== filterValue) {
@@ -50,22 +44,7 @@ export class PropertyService {
           }
         }
       }
-
       return true;
-
-      // for (const key in filter) {
-      //   console.log(key, filter,  '>>>')
-      //   if (filter[key as keyof typeof filter] !== undefined) {
-      //     console.log(property[key as keyof typeof filter], filter[key as keyof typeof filter])
-      //     if (
-      //       property[key as keyof typeof filter] !==
-      //       filter[key as keyof typeof filter]
-      //     ) {
-      //       return false;
-      //     }
-      //   }
-      // }
-      // return true;
     });
 
     if (sort === 'asc') {

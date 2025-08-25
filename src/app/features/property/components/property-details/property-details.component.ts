@@ -1,45 +1,40 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   effect,
-  EventEmitter,
   inject,
-  input,
-  Input,
   OnInit,
-  Output,
   signal,
 } from '@angular/core';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   IAmenities,
-  IProperty,
-  IUser,
-  LeaseType,
-  PriceMode,
-  PropertyType,
-} from '../../interface';
+} from '../../../home/interface';
 import { CommonModule } from '@angular/common';
-import { PropertyService } from '../..';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommentSectionComponent } from '../comment-section/comment-section.component';
 import { ButtonComponent } from '../../../../shared';
-import { UserQueryService } from '../../services/user-query.service';
-import { AuthService } from '../../../auth';
+import { UserQueryService } from '../../../home/services/user-query.service';
+import { AuthService, IUser } from '../../../auth';
 import { FormsModule } from '@angular/forms';
-import { LandlordQueriesComponent } from '../landlord-queries/landlord-queries.component';
-import { RenterQueriesComponent } from '../renter-queries/renter-queries.component';
+import { LandlordQueriesComponent } from '../../../landlord/components/landlord-queries/landlord-queries.component';
+import { RenterQueriesComponent } from '../../../home/components/renter-queries/renter-queries.component';
+import { PropertyService } from '../../services';
+import { IProperty, LeaseType, PriceMode, PropertyType } from '../../interface';
 
 @Component({
   selector: 'app-property-details',
   imports: [NgbCarouselModule, CommonModule, FormsModule, CommentSectionComponent, ButtonComponent,
-    LandlordQueriesComponent, RenterQueriesComponent
+    LandlordQueriesComponent, RenterQueriesComponent, RouterModule
   ],
   templateUrl: './property-details.component.html',
   styleUrl: './property-details.component.scss',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PropertyDetailsComponent implements OnInit {
   
-  property?: IProperty;
+  property = signal<IProperty | null>(null);;
   activeUser: IUser | null = null;
   propertyTypeEnum = PropertyType;
   leaseTypeEnum = LeaseType;
@@ -53,7 +48,6 @@ export class PropertyDetailsComponent implements OnInit {
   constructor() {
     effect(async () => {
       this.activeUser = this.authService.currentUser();
-      console.log(this.activeUser)
     });
   }
    
@@ -68,9 +62,8 @@ export class PropertyDetailsComponent implements OnInit {
 
   private async getPropertyDetails(propertyId: number) {
     const property = await this.propertyService.getById(propertyId);
-    console.log(property, 'propertypropertyproperty')
     if (property) {
-      this.property = property;
+      this.property.set(property);
     }
   }
 
@@ -92,7 +85,7 @@ export class PropertyDetailsComponent implements OnInit {
 
   openUserQueryModal() {
     this.userQueryService
-        .sendEnquiryModal(this.property as IProperty, this.activeUser as IUser)
+        .sendEnquiryModal(this.property() as IProperty, this.activeUser as IUser)
         .subscribe((res) => {});
   }
 }

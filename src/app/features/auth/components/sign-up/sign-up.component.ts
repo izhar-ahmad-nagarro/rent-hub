@@ -7,7 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgbActiveModal, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { ButtonComponent, UserRole } from '../../../../shared';
+import { ButtonComponent } from '../../../../shared';
+import { UserRole } from '../../interface';
 
 @Component({
   selector: 'app-sign-up',

@@ -6,15 +6,14 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { ButtonComponent, IUser } from '../../../shared';
-import { NgbDropdownModule, NgbModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonComponent } from '../../../shared';
+import { NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../../features';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SearchService } from '../../../features/home/services';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter } from 'rxjs';
-import { AlertService } from '../../../shared/services/alert.service';
 
 @Component({
   selector: 'app-header',
@@ -55,6 +54,7 @@ export class HeaderComponent {
 
   logout() {
     this.authService.logout();
+    this.router.navigate(['/home'])
   }
 
   postProperty() {
@@ -62,6 +62,6 @@ export class HeaderComponent {
   }
 
   navigateToMyListings() {
-    this.router.navigate(['/my-properties'])
+    this.router.navigate(['/landlord/listings'])
   }
 }

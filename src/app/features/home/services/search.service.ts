@@ -12,7 +12,6 @@ export class SearchService {
   constructor() {
     effect(() => {
       const value = this.searchTerm();
-      console.log('serach', value)
       // Clear previous timeout
       clearTimeout(this.debounceTimeout);
 

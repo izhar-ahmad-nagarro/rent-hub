@@ -14,7 +14,7 @@ import {
   IProperty,
   PriceMode,
   PropertyType,
-} from '../../../features/home/interface/property.interface';
+} from '../../../features/property/interface/property.interface';
 import { ButtonComponent } from '../button/button.component';
 import { Router } from '@angular/router';
 import { IAmenities, IUser } from '../../../features';
@@ -59,6 +59,6 @@ export class ApartmentCardComponent implements OnChanges {
   }
 
   cardClick() {
-    this.router.navigate(['/property/details', this.property().id])
+    this.router.navigate(['/property', this.property().id, 'details'])
   }
 }

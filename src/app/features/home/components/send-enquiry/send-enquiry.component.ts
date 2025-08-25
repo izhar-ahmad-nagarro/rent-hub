@@ -13,8 +13,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { ButtonComponent, IProperty, IUser } from '../../../../shared';
+import { ButtonComponent } from '../../../../shared';
 import { CommonModule } from '@angular/common';
+import { IProperty } from '../../../property/interface';
+import { IUser } from '../../../auth';
 
 @Component({
   selector: 'app-send-enquiry',

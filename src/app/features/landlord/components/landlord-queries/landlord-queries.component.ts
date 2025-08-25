@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IUserQuery } from '../../interface';
+import { IUserQuery } from '../../../home/interface';
 import { ButtonComponent } from '../../../../shared';
-import { UserQueryService } from '../../services/user-query.service';
+import { UserQueryService } from '../../../home/services/user-query.service';
 
 @Component({
   selector: 'app-landlord-queries',

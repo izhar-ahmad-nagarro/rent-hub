@@ -8,17 +8,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { PropertyService } from '../../services';
 import {
   ButtonComponent,
-  IUser,
-  LeaseType,
-  PriceMode,
-  PropertyType,
 } from '../../../../shared';
 import { AlertService } from '../../../../shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../auth';
+import { AuthService, IUser } from '../../../auth';
+import { PropertyService } from '../../../property/services';
 
 @Component({
   selector: 'app-add-property',
@@ -90,12 +86,13 @@ export class AddPropertyComponent implements OnInit {
     this.getPropertyDetailsInEdit();
   }
 
-  onAmenityChange(event: any) {
-    if (event.target.checked) {
-      this.amenitiesArray.push(this.fb.control(Number(event.target.value)));
+  onAmenityChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.checked) {
+      this.amenitiesArray.push(this.fb.control(Number(input.value)));
     } else {
       const index = this.amenitiesArray.controls.findIndex(
-        (x) => x.value === event.target.value
+        (x) => x.value === Number(input.value)
       );
       this.amenitiesArray.removeAt(index);
     }
@@ -106,7 +103,6 @@ export class AddPropertyComponent implements OnInit {
   }
 
   onImageSelected(event: any) {
-    console.log(event.target.files);
     const files = event.target.files;
     for (let file of files) {
       if (file) {
@@ -130,6 +126,7 @@ export class AddPropertyComponent implements OnInit {
           ownerId: this.activeUser!.id,
         });
         this.alertService.success('Property updated successfully');
+        
       } else {
         await this.propertyService.add({
           ...this.propertyForm.value,
@@ -137,8 +134,8 @@ export class AddPropertyComponent implements OnInit {
         });
         this.alertService.success('Property added successfully');
       }
+      this.router.navigate(['/landlord/listings']);
 
-      this.router.navigate(['my-properties']);
     }
   }
 
@@ -167,10 +164,10 @@ export class AddPropertyComponent implements OnInit {
           isShared: property.isShared,
           featured: property.featured,
         });
-        property.amenities.forEach((id) =>
+        property.amenities.forEach((id: number) =>
           this.amenitiesArray.push(new FormControl(id))
         );
-        property.images.forEach((img) =>
+        property.images.forEach((img: Base64URLString) =>
           this.imageArray.push(new FormControl(img))
         );
       }

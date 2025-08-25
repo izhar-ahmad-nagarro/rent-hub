@@ -182,6 +182,7 @@
             <div *ngFor="let amenity of amenitiesList">
               <input
                 type="checkbox"
+                name="{{amenity.id}}"
                 [checked]="propertyForm.value.amenities?.includes(amenity.id)"
                 [value]="amenity.id"
                 (change)="onAmenityChange($event)"

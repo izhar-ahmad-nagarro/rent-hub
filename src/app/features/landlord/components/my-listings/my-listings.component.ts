@@ -2,17 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import {
   ApartmentCardComponent,
-  IProperty,
-  IUser,
-  UserRole,
 } from '../../../../shared';
-import { AuthService } from '../../../auth';
-import { IAmenities, PropertyService, SearchService, UserFavoritesService } from '../..';
-import { Router } from '@angular/router';
+import { AuthService, IUser, UserRole } from '../../../auth';
+import { IAmenities, SearchService, UserFavoritesService } from '../../../home';
+import { Router, RouterModule } from '@angular/router';
+import { PropertyService } from '../../../property/services';
+import { IProperty } from '../../../property/interface';
 
 @Component({
   selector: 'app-my-listings',
-  imports: [ApartmentCardComponent, CommonModule],
+  imports: [ApartmentCardComponent, CommonModule, RouterModule],
   templateUrl: './my-listings.component.html',
   styleUrl: './my-listings.component.scss',
 })
@@ -63,7 +62,7 @@ export class MyListingsComponent {
   }
 
   editProperty(property: IProperty) {
-    this.router.navigate(['property/edit', property.id])
+    this.router.navigate(['property', property.id, 'edit'])
   }
 
   deleteProperty(property: IProperty) {
@@ -83,6 +82,5 @@ export class MyListingsComponent {
 
   private async getAmenitiesMap() {
     this.amenities = await this.propertyService.getAmenitiesMap();
-    console.log(this.amenities, '>>>>>>>>>>>>>>>>>..')
   }
 }
