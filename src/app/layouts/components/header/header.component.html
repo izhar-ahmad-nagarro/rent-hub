@@ -3,12 +3,14 @@
 >
   <div class="container-fluid">
     <!-- Brand -->
-    <a
-      class="navbar-brand fw-bold d-flex align-items-center"
-      [routerLink]="['/']"
-    >
-      <i class="fa-solid fa-house me-2"></i> Rent Hub
-    </a>
+    <div class="w-25">
+      <a
+        class="navbar-brand fw-bold d-flex align-items-center"
+        [routerLink]="['/']"
+      >
+        <i class="fa-solid fa-house me-2"></i> Rent Hub
+      </a>
+    </div>
 
     <!-- Toggler for mobile -->
     <button
@@ -24,9 +26,9 @@
     </button>
 
     <!-- Collapsible Section -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse justify-content-end gap-4" id="navbarSupportedContent">
       <!-- Search bar on homepage -->
-      <div *ngIf="isHomePage" class="mx-auto my-2 my-lg-0">
+      <div *ngIf="isHomePage()" class="w-50 my-2 my-lg-0 search-container">
         <div class="input-group">
           <span class="input-group-text bg-white border-end-0">
             <i class="fa-solid fa-magnifying-glass"></i>
@@ -44,9 +46,8 @@
 
       <!-- Right-aligned buttons -->
       <div
-        class="ms-auto d-flex flex-column flex-sm-row align-items-start align-items-lg-center gap-2 mt-lg-0"
+        class=" d-flex flex-column flex-sm-row align-items-start align-items-lg-center gap-2 mt-lg-0 justify-content-end right-button-container"
       >
-
         <ng-container *ngIf="!authService.isLoggedIn()">
           <app-button
             label="Login"
@@ -65,13 +66,16 @@
             <app-button
               label="Post Property"
               variant="primary"
+              [size]="'sm'"
+              class="w-100"
               (clicked)="postProperty()"
+                          [block]="true"
               icon="fa-solid fa-plus"
             ></app-button>
           </ng-container>
 
           <!-- User Dropdown -->
-          <div ngbDropdown placement="bottom-end" class="dropdown col-12">
+          <div ngbDropdown placement="bottom-end" class="dropdown col-12 col-sm-4 mt-2">
             <button
               class="btn btn-outline-secondary col-12"
               id="profileDropdown"
@@ -93,6 +97,7 @@
               </div>
               <div class="dropdown-divider"></div>
               <app-button
+                *ngIf="authService.isLandLord()"
                 class="dropdown-item bg-transparent"
                 variant="link"
                 label="My Listings"

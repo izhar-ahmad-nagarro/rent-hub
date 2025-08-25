@@ -1,5 +1,11 @@
 @media (max-width: 768px) {
-  form input {
+  .search-container {
     width: 100% !important;
   }
+}
+
+@media (min-width: 768px){
+.right-button-container {
+  width: 25%;
+}
 }

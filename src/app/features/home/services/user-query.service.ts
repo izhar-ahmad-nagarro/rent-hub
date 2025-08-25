@@ -7,32 +7,43 @@ import { map, Observable } from 'rxjs';
 import { AlertService } from '../../../shared/services/alert.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserQueryService {
   private modalService = inject(NgbModal);
   private alertService = inject(AlertService);
-  adduserQuery(payload: IUserQuery){
+  adduserQuery(payload: IUserQuery) {
     return db.userQueries.add(payload);
   }
 
-  getUserQueryByUserId(userId: number){
-    // return db.userQueries.
+  getUserQueryByUserId(userId: number, propertyId: number) {
+    return db.userQueries
+      .where('[userId+propertyId]')
+      .equals([userId, propertyId])
+      .toArray();
   }
 
-  sendEnquiryModal(property: IProperty, user:IUser): Observable<unknown> {
+  getUserQueryByProperty(propertyId: number) {
+    return db.userQueries.where('propertyId').equals(propertyId).toArray();
+  }
+
+  update(id: number, changes: Partial<IUserQuery>) {
+    return db.userQueries.update(id, changes);
+  }
+
+  sendEnquiryModal(property: IProperty, user: IUser): Observable<unknown> {
     const modalRef = this.modalService.open(SendEnquiryComponent, {
       centered: true,
       backdrop: 'static',
     });
     modalRef.componentInstance.property = property;
     modalRef.componentInstance.activeUser = user;
-    return modalRef.componentInstance.submitUserQuery.pipe(map(
-      async (res: IUserQuery) => {
+    return modalRef.componentInstance.submitUserQuery.pipe(
+      map(async (res: IUserQuery) => {
         await this.adduserQuery(res);
         this.alertService.success('Query submitted successfully');
         modalRef.close();
-      }
-    ));
+      })
+    );
   }
 }

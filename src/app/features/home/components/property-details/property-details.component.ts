@@ -25,14 +25,20 @@ import { CommentSectionComponent } from '../comment-section/comment-section.comp
 import { ButtonComponent } from '../../../../shared';
 import { UserQueryService } from '../../services/user-query.service';
 import { AuthService } from '../../../auth';
+import { FormsModule } from '@angular/forms';
+import { LandlordQueriesComponent } from '../landlord-queries/landlord-queries.component';
+import { RenterQueriesComponent } from '../renter-queries/renter-queries.component';
 
 @Component({
   selector: 'app-property-details',
-  imports: [NgbCarouselModule, CommonModule, CommentSectionComponent, ButtonComponent],
+  imports: [NgbCarouselModule, CommonModule, FormsModule, CommentSectionComponent, ButtonComponent,
+    LandlordQueriesComponent, RenterQueriesComponent
+  ],
   templateUrl: './property-details.component.html',
   styleUrl: './property-details.component.scss',
 })
 export class PropertyDetailsComponent implements OnInit {
+  
   property?: IProperty;
   activeUser: IUser | null = null;
   propertyTypeEnum = PropertyType;
@@ -42,7 +48,7 @@ export class PropertyDetailsComponent implements OnInit {
   private propertyService = inject(PropertyService);
   private activatedRoute = inject(ActivatedRoute);
   private userQueryService = inject(UserQueryService);
-  private authService = inject(AuthService);
+  authService = inject(AuthService);
 
   constructor() {
     effect(async () => {
@@ -50,6 +56,7 @@ export class PropertyDetailsComponent implements OnInit {
       console.log(this.activeUser)
     });
   }
+   
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params['id']) {
       this.getPropertyDetails(
@@ -77,21 +84,6 @@ export class PropertyDetailsComponent implements OnInit {
     } else {
         this.openUserQueryModal();
     }
-
-    // this.sendEnquiryClick.emit(this.property);
-    // const modalRef = this.modalService.open(SendEnquiryComponent, {
-    //   centered: true,
-    //   backdrop: 'static',
-    // });
-    // modalRef.componentInstance.property = property;
-    // modalRef.componentInstance.activeUser = this.activeUser;
-    // modalRef.componentInstance.submitUserQuery.subscribe(
-    //   async (res: IUserQuery) => {
-    //     await this.userQueryService.adduserQuery(res);
-    //     this.alertService.success('Query submitted successfully');
-    //     modalRef.close();
-    //   }
-    // );
   }
 
   private async getAmenitiesMap(){

@@ -1,0 +1,25 @@
+<div class="mt-5 pb-2 overflow-y-auto query-container">
+  <h3>My Sent Queries</h3>
+  <div *ngIf="queries.length === 0" class="text-muted">No queries sent.</div>
+
+  <div *ngFor="let query of queries" class="card mb-3 shadow-sm">
+    <div class="card-body">
+      <p><strong>Your Message:</strong> {{ query.message }}</p>
+      <small class="text-muted">{{ query.createdAt | date:'short' }}</small>
+
+      <div *ngIf="query.replies.length > 0" class="mt-3">
+        <h6>Landlord Replies:</h6>
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let reply of query.replies" class="list-group-item">
+            <div>{{ reply.message }}</div>
+            <small class="text-muted">{{ reply.createdAt | date:'short' }}</small>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="query.replies.length === 0" class="text-muted mt-3">
+        No reply yet.
+      </div>
+    </div>
+  </div>
+</div>

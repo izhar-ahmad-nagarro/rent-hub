@@ -11,10 +11,14 @@ export class PropertyService {
       Pick<IProperty, 'type' | 'isFurnished' | 'location' | 'ownerId'>
     > = {}
   ) {
-    let collection = search
-      ? db.properties.where('title').startsWithIgnoreCase(search)
-      : db.properties.toCollection();
+    const pattern = new RegExp(search, 'i'); // Case-insensitive regex
+
+    let collection = db.properties.toCollection();
     collection = collection.filter((property) => {
+      if (search && !pattern.test(property.title)) {
+        return false;
+      }
+
       for (const key in filter) {
         if (filter[key as keyof typeof filter] !== undefined) {
           if (
@@ -65,7 +69,7 @@ export class PropertyService {
 
   async getAmenitiesMap() {
     const amenityMap = new Map<number, IAmenities>(
-     (await this.getAmenities()).map(a => [a.id, a])
+      (await this.getAmenities()).map((a) => [a.id, a])
     );
     return amenityMap;
   }

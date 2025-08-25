@@ -3,6 +3,14 @@ export interface IUserQuery {
   propertyId: number;
   userId: number;
   userName: string;
+  email: string;
   message: string;
-  createdAt: Date;
+  createdAt: number;
+  replies: IReply[];
+  replyText?: string;
+}
+
+export interface IReply {
+  message: string;
+  createdAt: number;
 }

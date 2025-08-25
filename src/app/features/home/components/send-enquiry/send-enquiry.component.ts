@@ -36,11 +36,11 @@ export class SendEnquiryComponent implements OnInit {
       userName: [this.activeUser?.name, Validators.required],
       email: [this.activeUser?.email, [Validators.required, Validators.email]],
       message: ['', Validators.required],
-      propertyId:[this.property?.id],
+      propertyId: [this.property?.id],
       userId: [this.activeUser?.id],
-      createdAt: [new Date()]
+      createdAt: [Date.now()],
     });
-    if(this.activeUser){
+    if (this.activeUser) {
       this.enquiryForm.controls['userName'].disable();
       this.enquiryForm.controls['email'].disable();
     }
@@ -48,7 +48,10 @@ export class SendEnquiryComponent implements OnInit {
 
   onSubmit() {
     if (this.enquiryForm?.valid) {
-      this.submitUserQuery.emit(this.enquiryForm.getRawValue());
+      this.submitUserQuery.emit({
+        ...this.enquiryForm.getRawValue(),
+        replies: [],
+      });
     }
   }
 

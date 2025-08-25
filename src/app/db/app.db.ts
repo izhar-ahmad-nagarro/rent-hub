@@ -19,7 +19,7 @@ export class AppDB extends Dexie {
       users: '++id, email, role',
       properties: '++id, title, ownerId, location, leaseType',
       comments: '++id, propertyId, userId, createdAt',
-      userQueries: '++id, propertyId, userId, createdAt',
+      userQueries: '++id, [userId+propertyId], propertyId, userId, createdAt',
       userFavourites: '++id, userId, propertyId',
       amenities: "++id"
     });

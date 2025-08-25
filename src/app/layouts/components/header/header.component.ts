@@ -35,7 +35,9 @@ export class HeaderComponent {
   private router = inject(Router);
   searchService = inject(SearchService);
   currentUrl = signal<string>('');
-  isHomePage = computed(() => this.currentUrl() === '/home');
+  isHomePage = computed(() => {
+    return this.currentUrl() === '/home';
+  });
   constructor() {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))

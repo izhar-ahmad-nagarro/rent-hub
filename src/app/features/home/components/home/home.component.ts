@@ -2,8 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  EventEmitter,
   inject,
   OnInit,
+  Output,
   signal,
 } from '@angular/core';
 import { ApartmentCardComponent, IAmenities, IUser } from '../../../../shared';
@@ -16,16 +18,18 @@ import {
 } from '../../services';
 import { AuthService } from '../../../auth';
 import { UserQueryService } from '../../services/user-query.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ApartmentCardComponent, CommonModule],
+  imports: [ApartmentCardComponent, CommonModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit{
+  showFilters = true; 
   properties = signal<IProperty[]>([]);
   featuredProperties = signal<IProperty[]>([]);
   favorites = signal<Map<number, number>>(new Map());
@@ -38,6 +42,35 @@ export class HomeComponent implements OnInit{
   
   activeUser: IUser | null = null;
 
+
+  @Output() filtersChanged = new EventEmitter<any>();
+
+  filters = {
+    isFurnished: null,
+    isShared: null,
+    type: null,
+  };
+
+  propertyTypes = [
+    { value: 0, label: 'Apartment' },
+    { value: 1, label: 'Independent House' },
+    { value: 2, label: 'Studio' },
+    { value: 3, label: 'PG/Hostel' },
+    { value: 4, label: 'Smart Home' }
+  ];
+
+  applyFilters() {
+    this.filtersChanged.emit(this.filters);
+  }
+
+  clearFilters() {
+    this.filters = {
+      isFurnished: null,
+      isShared: null,
+      type: null,
+    };
+    this.applyFilters();
+  }
   ngOnInit(): void {
     this.getAmenitiesMap();
   }

@@ -1,219 +1,229 @@
 <div class="container mt-4">
-  <div class="card shadow-lg p-4">
-    <h3 class="mb-4">Add New Property</h3>
-
-    <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
-        <label class="form-label">Title</label>
-        <input
-          formControlName="title"
-          type="text"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': isInvalid('title') }"
-        />
-        <div class="invalid-feedback">Title is required.</div>
+  <div class="  row d-flex flex-row">
+    <div class="col col-sm-6 pe-4">
+      <h3>Rent your property faster with Rent Hub</h3>
+      <p><i class="fa-solid fa-circle-check"></i>Get unlimited enquiries</p>
+      <p><i class="fa-solid fa-circle-check"></i>Shortlist properties</p>
+      <p><i class="fa-solid fa-circle-check"></i>Interact with renters/landlords in comments</p>
+      <div class="row">
+        <img alt="List at Rent Hub" src="assets/images/add-banner.jpg" />
       </div>
+    </div>
+    <div class=" card shadow-lg p-4 col-sm-6">
+      <h3 class="mb-4">Add New Property</h3>
 
-      <!-- Owner Name -->
-      <div class="mb-3">
-        <label class="form-label">Owner Name</label>
-        <input
-          formControlName="ownerName"
-          type="text"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': isInvalid('ownerName') }"
-        />
-        <div class="invalid-feedback">Owner name is required.</div>
-      </div>
-
-      <!-- Description -->
-      <div class="mb-3">
-        <label class="form-label">Description</label>
-        <textarea
-          formControlName="description"
-          class="form-control"
-          rows="3"
-          [ngClass]="{ 'is-invalid': isInvalid('description') }"
-        ></textarea>
-        <div class="invalid-feedback">Description is required.</div>
-      </div>
-
-      <!-- Location -->
-      <div class="mb-3">
-        <label class="form-label">Location</label>
-        <input
-          formControlName="location"
-          type="text"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': isInvalid('location') }"
-        />
-        <div class="invalid-feedback">Location is required.</div>
-      </div>
-
-      <!-- Size -->
-      <div class="mb-3">
-        <label class="form-label">Size</label>
-        <input
-          formControlName="size"
-          type="text"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': isInvalid('size') }"
-        />
-        <div class="invalid-feedback">Size is required.</div>
-      </div>
-
-      <!-- Expected Rent -->
-      <div class="mb-3">
-        <label class="form-label">Expected Rent ($)</label>
-        <input
-          formControlName="expectedRent"
-          type="number"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': isInvalid('expectedRent') }"
-        />
-        <div class="invalid-feedback">
-          Rent is required and must be a non-negative number.
+      <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input
+            formControlName="title"
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': isInvalid('title') }"
+          />
+          <div class="invalid-feedback">Title is required.</div>
         </div>
-      </div>
 
-      <!-- Lease Type -->
-      <div class="mb-3">
-        <label class="form-label">Lease Type</label>
-        <select
-          class="form-select"
-          formControlName="leaseType"
-          [ngClass]="{ 'is-invalid': isInvalid('leaseType') }"
-        >
-          <option value="">Select</option>
-          <option [value]="type.value" *ngFor="let type of leaseType">
-            {{ type.label }}
-          </option>
-        </select>
-        <div class="invalid-feedback">Lease type is required.</div>
-      </div>
+        <!-- Owner Name -->
+        <div class="mb-3">
+          <label class="form-label">Owner Name</label>
+          <input
+            formControlName="ownerName"
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': isInvalid('ownerName') }"
+          />
+          <div class="invalid-feedback">Owner name is required.</div>
+        </div>
 
-      <!-- Price Mode -->
-      <div class="mb-3">
-        <label class="form-label">Price Mode</label>
-        <select
-          class="form-select"
-          formControlName="priceMode"
-          [ngClass]="{ 'is-invalid': isInvalid('priceMode') }"
-        >
-          <option value="">Select</option>
-          <option [value]="type.value" *ngFor="let type of priceMode">
-            {{ type.label }}
-          </option>
-        </select>
-        <div class="invalid-feedback">Price mode is required.</div>
-      </div>
+        <!-- Description -->
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea
+            formControlName="description"
+            class="form-control"
+            rows="3"
+            [ngClass]="{ 'is-invalid': isInvalid('description') }"
+          ></textarea>
+          <div class="invalid-feedback">Description is required.</div>
+        </div>
 
-      <!-- Type -->
-      <div class="mb-3">
-        <label class="form-label">Property Type</label>
-        <select
-          class="form-select"
-          formControlName="type"
-          [ngClass]="{ 'is-invalid': isInvalid('type') }"
-        >
-          <option value="">Select</option>
-          <option [value]="type.value" *ngFor="let type of propertyTypes">
-            {{ type.label }}
-          </option>
-        </select>
-        <div class="invalid-feedback">Property type is required.</div>
-      </div>
+        <!-- Location -->
+        <div class="mb-3">
+          <label class="form-label">Location</label>
+          <input
+            formControlName="location"
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': isInvalid('location') }"
+          />
+          <div class="invalid-feedback">Location is required.</div>
+        </div>
 
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              formControlName="isFurnished"
-              type="checkbox"
-              id="furnishedCheck"
-            />
-            <label class="form-check-label ps-2" for="furnishedCheck"
-              >Furnished</label
-            >
+        <!-- Size -->
+        <div class="mb-3">
+          <label class="form-label">Size</label>
+          <input
+            formControlName="size"
+            type="text"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': isInvalid('size') }"
+          />
+          <div class="invalid-feedback">Size is required.</div>
+        </div>
+
+        <!-- Expected Rent -->
+        <div class="mb-3">
+          <label class="form-label">Expected Rent ($)</label>
+          <input
+            formControlName="expectedRent"
+            type="number"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': isInvalid('expectedRent') }"
+          />
+          <div class="invalid-feedback">
+            Rent is required and must be a non-negative number.
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              formControlName="isShared"
-              type="checkbox"
-              id="sharedCheck"
-            />
-            <label class="form-check-label ps-2" for="sharedCheck"
-              >Shared</label
-            >
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              formControlName="featured"
-              type="checkbox"
-              id="featuredCheck"
-            />
-            <label class="form-check-label ps-2" for="featuredCheck"
-              >Featured</label
-            >
-          </div>
-        </div>
-      </div>
 
-      <div class="mb-3">
-        <label class="form-label">Amenities</label>
-        <div class="d-flex flex-wrap gap-3">
-          <div *ngFor="let amenity of amenitiesList">
-            <input
-              type="checkbox"
-              [checked]="propertyForm.value.amenities?.includes(amenity.id)"
-              [value]="amenity.id"
-              (change)="onAmenityChange($event)"
-              class="form-check-input me-1"
-            />
-            {{ amenity.label }}
-          </div>
-        </div>
-      </div>
-      <!-- Image Upload -->
-      <div class="mb-4">
-        <label class="form-label">Upload Image</label>
-        <input
-          type="file"
-          class="form-control"
-          multiple
-          (change)="onImageSelected($event)"
-        />
-
-        <div class="d-flex flex-wrap gap-2 mt-3">
-          <div
-            class="position-relative"
-            *ngFor="let img of imageArray.value; let i = index"
-            style="width: 100px; height: 100px"
+        <!-- Lease Type -->
+        <div class="mb-3">
+          <label class="form-label">Lease Type</label>
+          <select
+            class="form-select"
+            formControlName="leaseType"
+            [ngClass]="{ 'is-invalid': isInvalid('leaseType') }"
           >
-            <img
-              [src]="img"
-              class="rounded"
-              style="width: 100%; height: 100%; object-fit: cover"
-            />
-            <button
-              type="button"
-              class="btn-close btn-close-white position-absolute top-0 end-0 m-1"
-              aria-label="Remove"
-              (click)="removeImage(i)"
-              style="background-color: rgba(0, 0, 0, 0.5)"
-            ></button>
+            <option value="">Select</option>
+            <option [value]="type.value" *ngFor="let type of leaseType">
+              {{ type.label }}
+            </option>
+          </select>
+          <div class="invalid-feedback">Lease type is required.</div>
+        </div>
+
+        <!-- Price Mode -->
+        <div class="mb-3">
+          <label class="form-label">Price Mode</label>
+          <select
+            class="form-select"
+            formControlName="priceMode"
+            [ngClass]="{ 'is-invalid': isInvalid('priceMode') }"
+          >
+            <option value="">Select</option>
+            <option [value]="type.value" *ngFor="let type of priceMode">
+              {{ type.label }}
+            </option>
+          </select>
+          <div class="invalid-feedback">Price mode is required.</div>
+        </div>
+
+        <!-- Type -->
+        <div class="mb-3">
+          <label class="form-label">Property Type</label>
+          <select
+            class="form-select"
+            formControlName="type"
+            [ngClass]="{ 'is-invalid': isInvalid('type') }"
+          >
+            <option value="">Select</option>
+            <option [value]="type.value" *ngFor="let type of propertyTypes">
+              {{ type.label }}
+            </option>
+          </select>
+          <div class="invalid-feedback">Property type is required.</div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                formControlName="isFurnished"
+                type="checkbox"
+                id="furnishedCheck"
+              />
+              <label class="form-check-label ps-2" for="furnishedCheck"
+                >Furnished</label
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                formControlName="isShared"
+                type="checkbox"
+                id="sharedCheck"
+              />
+              <label class="form-check-label ps-2" for="sharedCheck"
+                >Shared</label
+              >
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                formControlName="featured"
+                type="checkbox"
+                id="featuredCheck"
+              />
+              <label class="form-check-label ps-2" for="featuredCheck"
+                >Featured</label
+              >
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- <div class="mb-4">
+        <div class="mb-3">
+          <label class="form-label">Amenities</label>
+          <div class="d-flex flex-wrap gap-3">
+            <div *ngFor="let amenity of amenitiesList">
+              <input
+                type="checkbox"
+                [checked]="propertyForm.value.amenities?.includes(amenity.id)"
+                [value]="amenity.id"
+                (change)="onAmenityChange($event)"
+                class="form-check-input me-1"
+              />
+              {{ amenity.label }}
+            </div>
+          </div>
+        </div>
+        <!-- Image Upload -->
+        <div class="mb-4">
+          <label class="form-label">Upload Image</label>
+          <input
+            type="file"
+            class="form-control"
+            multiple
+            (change)="onImageSelected($event)"
+          />
+
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <div
+              class="position-relative"
+              *ngFor="let img of imageArray.value; let i = index"
+              style="width: 100px; height: 100px"
+            >
+              <img
+                [src]="img"
+                class="rounded"
+                style="width: 100%; height: 100%; object-fit: cover"
+              />
+              <button
+                type="button"
+                class="btn-close btn-close-white position-absolute top-0 end-0 m-1"
+                aria-label="Remove"
+                (click)="removeImage(i)"
+                style="background-color: rgba(0, 0, 0, 0.5)"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="mb-4">
         <label class="form-label">Upload Image</label>
         <input
           type="file"
@@ -230,15 +240,16 @@
         </div>
       </div> -->
 
-      <!-- Submit Button -->
+        <!-- Submit Button -->
 
-      <app-button
-        label="Submit Property"
-        type="submit"
-        [disabled]="!propertyForm.valid"
-        variant="primary"
-        icon="fas fa-upload me-2"
-      ></app-button>
-    </form>
+        <app-button
+          label="Submit Property"
+          type="submit"
+          [disabled]="!propertyForm.valid"
+          variant="primary"
+          icon="fas fa-upload me-2"
+        ></app-button>
+      </form>
+    </div>
   </div>
 </div>
