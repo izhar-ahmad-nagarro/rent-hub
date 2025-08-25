@@ -83,7 +83,9 @@ export class AddPropertyComponent implements OnInit {
     return !!(control && control.invalid && (control.dirty || control.touched));
   }
   ngOnInit(): void {
-    setTimeout(() => this.getEnumData());
+    this.leaseType = this.propertyService.leaseType;
+    this.priceMode = this.propertyService.priceModeArr;
+    this.propertyTypes = this.propertyService.propertyTypes;
     this.getAmenities();
     this.getPropertyDetailsInEdit();
   }
@@ -144,30 +146,7 @@ export class AddPropertyComponent implements OnInit {
     this.amenitiesList = await this.propertyService.getAmenities();
   }
 
-  private getEnumData() {
-    //get price mode
-    this.priceMode = Object.keys(PriceMode)
-      .filter((key) => isNaN(Number(key)))
-      .map((key) => ({
-        label: key,
-        value: PriceMode[key as keyof typeof PriceMode],
-      }));
-    //get lease type
-    this.leaseType = Object.keys(LeaseType)
-      .filter((key) => isNaN(Number(key)))
-      .map((key) => ({
-        label: key,
-        value: LeaseType[key as keyof typeof LeaseType],
-      }));
-
-    //get property types
-    this.propertyTypes = Object.keys(PropertyType)
-      .filter((key) => isNaN(Number(key)))
-      .map((key) => ({
-        label: key,
-        value: PropertyType[key as keyof typeof PropertyType],
-      }));
-  }
+  
 
   private async getPropertyDetailsInEdit() {
     const propertyId = Number(this.activatedRoute.snapshot.params['id']);

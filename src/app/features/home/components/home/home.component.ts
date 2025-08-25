@@ -2,14 +2,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  EventEmitter,
   inject,
   OnInit,
-  Output,
   signal,
 } from '@angular/core';
 import { ApartmentCardComponent, IAmenities, IUser } from '../../../../shared';
-import { IProperty } from '../../interface/property.interface';
+import { IProperty, IPropertyFilter } from '../../interface/property.interface';
 import { CommonModule } from '@angular/common';
 import {
   PropertyService,
@@ -19,17 +17,17 @@ import {
 import { AuthService } from '../../../auth';
 import { UserQueryService } from '../../services/user-query.service';
 import { FormsModule } from '@angular/forms';
+import { PropertyFilterComponent } from '../property-filter/property-filter.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [ApartmentCardComponent, CommonModule, FormsModule],
+  imports: [ApartmentCardComponent, CommonModule, FormsModule, PropertyFilterComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements OnInit{
-  showFilters = true; 
+export class HomeComponent implements OnInit {
   properties = signal<IProperty[]>([]);
   featuredProperties = signal<IProperty[]>([]);
   favorites = signal<Map<number, number>>(new Map());
@@ -39,48 +37,19 @@ export class HomeComponent implements OnInit{
   private propertyService = inject(PropertyService);
   private searchService = inject(SearchService);
   private userQueryService = inject(UserQueryService);
-  
+
   activeUser: IUser | null = null;
 
-
-  @Output() filtersChanged = new EventEmitter<any>();
-
-  filters = {
-    isFurnished: null,
-    isShared: null,
-    type: null,
-  };
-
-  propertyTypes = [
-    { value: 0, label: 'Apartment' },
-    { value: 1, label: 'Independent House' },
-    { value: 2, label: 'Studio' },
-    { value: 3, label: 'PG/Hostel' },
-    { value: 4, label: 'Smart Home' }
-  ];
-
-  applyFilters() {
-    this.filtersChanged.emit(this.filters);
-  }
-
-  clearFilters() {
-    this.filters = {
-      isFurnished: null,
-      isShared: null,
-      type: null,
-    };
-    this.applyFilters();
-  }
   ngOnInit(): void {
     this.getAmenitiesMap();
   }
 
   constructor() {
     effect(async () => {
-      const term = this.searchService.debouncedSearch().trim().toLowerCase();
-      const resp = await this.propertyService.getAll(term);
-      this.properties.set(resp);
-      this.featuredProperties.set(resp.filter((p) => p.featured));
+      const resp = await this.getAndSetProperties();
+      if(!this.featuredProperties().length){
+        this.featuredProperties.set(resp.filter((p) => p.featured));
+      }
     });
 
     effect(async () => {
@@ -120,5 +89,18 @@ export class HomeComponent implements OnInit{
         .sendEnquiryModal(property, this.activeUser as IUser)
         .subscribe();
     }
+  }
+
+  async filtersChanged(filters: IPropertyFilter){
+    const term = this.searchService.debouncedSearch().trim().toLowerCase();
+    const resp = await this.propertyService.getAll(term, 'asc', filters);
+    this.properties.set(resp);
+  }
+
+ async  getAndSetProperties() {
+    const term = this.searchService.debouncedSearch().trim().toLowerCase();
+      const resp = await this.propertyService.getAll(term,);
+      this.properties.set(resp);
+      return resp;
   }
 }
