@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build Angular app
-        run: npm run build --configuration=production
+        run: ng build --configuration=production
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
