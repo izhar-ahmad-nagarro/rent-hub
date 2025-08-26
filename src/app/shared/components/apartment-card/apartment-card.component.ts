@@ -28,7 +28,7 @@ import { IAmenities, IUser } from '../../../features';
 })
 export class ApartmentCardComponent implements OnChanges {
   favorites = input<Map<unknown, unknown>>();
-  property = input<IProperty>();
+  property = input.required<IProperty>();
 
   activeUser = input<IUser | null>();
   @Output() viewDetails = new EventEmitter<any>();

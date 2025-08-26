@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ApartmentCardComponent } from './apartment-card.component';
-import { signal } from '@angular/core';
+import { InputSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { IProperty } from '../../../features';
+import { of } from 'rxjs';
 
 describe('ApartmentCardComponent', () => {
   let component: ApartmentCardComponent;
@@ -33,6 +34,9 @@ describe('ApartmentCardComponent', () => {
 
     fixture = TestBed.createComponent(ApartmentCardComponent);
     component = fixture.componentInstance;
+    TestBed.runInInjectionContext(()=> {
+    component.property = toSignal(of(mockProperty))  as InputSignal<IProperty>;
+  });
     fixture.detectChanges();
   });
 
