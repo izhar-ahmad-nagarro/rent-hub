@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddPropertyComponent } from './add-property.component';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
 
 describe('AddPropertyComponent', () => {
   let component: AddPropertyComponent;
@@ -8,7 +10,11 @@ describe('AddPropertyComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddPropertyComponent]
+      imports: [AddPropertyComponent],
+      providers:[
+        provideHttpClient(),
+        provideRouter([])
+      ]
     })
     .compileComponents();
 

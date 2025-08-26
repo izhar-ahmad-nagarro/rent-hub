@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SendEnquiryComponent } from './send-enquiry.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('SendEnquiryComponent', () => {
   let component: SendEnquiryComponent;
@@ -8,7 +9,8 @@ describe('SendEnquiryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SendEnquiryComponent]
+      imports: [SendEnquiryComponent],
+      providers: [NgbActiveModal ]
     })
     .compileComponents();
 

@@ -28,7 +28,7 @@ import { IAmenities, IUser } from '../../../features';
 })
 export class ApartmentCardComponent implements OnChanges {
   favorites = input<Map<unknown, unknown>>();
-  property = input.required<IProperty>();
+  property = input<IProperty>();
 
   activeUser = input<IUser | null>();
   @Output() viewDetails = new EventEmitter<any>();
@@ -44,7 +44,8 @@ export class ApartmentCardComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['favorites']) {
-      this.property().isFavorited = !!this.favorites()?.get(this.property().id);
+      const fav = !!this.favorites()?.get(this.property()?.id);
+      (this.property() as IProperty)['isFavorited'] = fav;
     }
   }
 
@@ -59,6 +60,6 @@ export class ApartmentCardComponent implements OnChanges {
   }
 
   cardClick() {
-    this.router.navigate(['/property', this.property().id, 'details'])
+    this.router.navigate(['/property', this.property()?.id, 'details'])
   }
 }

@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SignUpComponent } from './sign-up.component';
+import { provideHttpClient } from '@angular/common/http';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 describe('SignUpComponent', () => {
   let component: SignUpComponent;
@@ -8,7 +10,8 @@ describe('SignUpComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SignUpComponent]
+      imports: [SignUpComponent],
+      providers: [provideHttpClient(), NgbActiveModal ]
     })
     .compileComponents();
 
