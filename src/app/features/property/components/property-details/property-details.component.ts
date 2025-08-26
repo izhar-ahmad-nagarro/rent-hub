@@ -40,7 +40,7 @@ import { filter, tap } from 'rxjs';
 })
 export class PropertyDetailsComponent implements OnInit {
   property = signal<IProperty | null>(null);
-  queries: IUserQuery[] = [];
+  queries = signal<IUserQuery[]>([]);
 
   activeUser: IUser | null = null;
   propertyTypeEnum = PropertyType;
@@ -65,10 +65,10 @@ export class PropertyDetailsComponent implements OnInit {
       !this.authService.isLandLord() &&
       Number(this.activatedRoute.snapshot.params['id'])
     ) {
-      this.queries = await this.userQueryService.getUserQueryByUserId(
+      this.queries.set(await this.userQueryService.getUserQueryByUserId(
         this.activeUser.id,
         Number(this.activatedRoute.snapshot.params['id'])
-      );
+      ));
     }
   }
 
@@ -77,9 +77,9 @@ export class PropertyDetailsComponent implements OnInit {
       Number(this.activatedRoute.snapshot.params['id']) &&
       this.authService.isLandLord()
     ) {
-      this.queries = await this.userQueryService.getUserQueryByProperty(
+      this.queries.set(await this.userQueryService.getUserQueryByProperty(
         Number(this.activatedRoute.snapshot.params['id'])
-      );
+      ));
     }
   }
 

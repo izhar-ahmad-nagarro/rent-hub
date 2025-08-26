@@ -87,9 +87,9 @@
   <ng-container *ngIf="authService.isLoggedIn()">
     <app-landlord-queries
       (sendReplyEvent)="sendReply($event)"
-      [queries]="queries"
+      [queries]="queries()"
       *ngIf="authService.isLandLord() && activeUser?.id === property()?.ownerId"
     ></app-landlord-queries>
-    <app-renter-queries *ngIf="!authService.isLandLord()" [queries]="queries"></app-renter-queries>
+    <app-renter-queries *ngIf="!authService.isLandLord()" [queries]="queries()"></app-renter-queries>
   </ng-container>
 </div>
