@@ -55,7 +55,7 @@
         <strong>Amenities:</strong>
         <ul>
           <li *ngFor="let amenity of property()?.amenities">
-            {{ amenitiesMap.get(amenity)?.label }}
+            {{ amenitiesMap().get(amenity)?.label }}
           </li>
         </ul>
       </div>

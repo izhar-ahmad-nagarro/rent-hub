@@ -46,7 +46,7 @@ export class PropertyDetailsComponent implements OnInit {
   propertyTypeEnum = PropertyType;
   leaseTypeEnum = LeaseType;
   priceModeEnum = PriceMode;
-  amenitiesMap: Map<number, IAmenities> = new Map();
+  amenitiesMap = signal<Map<number, IAmenities>>(new Map());
   private propertyService = inject(PropertyService);
   private activatedRoute = inject(ActivatedRoute);
   private userQueryService = inject(UserQueryService);
@@ -113,7 +113,7 @@ export class PropertyDetailsComponent implements OnInit {
   }
 
   private async getAmenitiesMap() {
-    this.amenitiesMap = await this.propertyService.getAmenitiesMap();
+    this.amenitiesMap.set(await this.propertyService.getAmenitiesMap());
   }
 
   openUserQueryModal() {
