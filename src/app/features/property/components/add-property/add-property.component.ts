@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, inject, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import {
   ButtonComponent,
+  IAmenities,
 } from '../../../../shared';
 import { AlertService } from '../../../../shared/services/alert.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -21,10 +22,11 @@ import { PropertyService } from '../../../property/services';
   imports: [ReactiveFormsModule, CommonModule, ButtonComponent],
   templateUrl: './add-property.component.html',
   styleUrl: './add-property.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddPropertyComponent implements OnInit {
   propertyForm: FormGroup;
-  amenitiesList: Array<any> = [];
+  amenitiesList: Array<IAmenities> = [];
   priceMode: Array<{
     label: string;
     value: number;
@@ -36,6 +38,7 @@ export class AddPropertyComponent implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
+  private cdr = inject(ChangeDetectorRef);
   propertyTypes: Array<{
     label: string;
     value: number;
@@ -102,19 +105,23 @@ export class AddPropertyComponent implements OnInit {
     this.imageArray.removeAt(index);
   }
 
-  onImageSelected(event: any) {
-    const files = event.target.files;
+  onImageSelected(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
     for (let file of files) {
       if (file) {
         const reader = new FileReader();
         reader.onload = () => {
           const base64String = reader.result as string;
           this.imageArray.push(this.fb.control(base64String));
+    this.cdr.markForCheck();
+
         };
         reader.readAsDataURL(file);
+
       }
     }
-    event.target.value = '';
+    target.value = '';
   }
 
   async onSubmit() {

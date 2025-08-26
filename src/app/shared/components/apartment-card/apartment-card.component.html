@@ -87,7 +87,7 @@
 
     <!-- Enquiry Button -->
     <app-button
-      *ngIf="activeUser()?.id !== property().ownerId"
+      *ngIf="!isLandLord()"
       label="Send Enquiry"
       variant="primary"
       [size]="'sm'"

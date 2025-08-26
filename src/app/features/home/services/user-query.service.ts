@@ -19,6 +19,7 @@ export class UserQueryService {
   }
 
   getUserQueryByUserId(userId: number, propertyId: number) {
+    console.log(userId, propertyId, '>>.')
     return db.userQueries
       .where('[userId+propertyId]')
       .equals([userId, propertyId])
@@ -45,6 +46,7 @@ export class UserQueryService {
         await this.adduserQuery(res);
         this.alertService.success('Query submitted successfully');
         modalRef.close();
+        return true;
       })
     );
   }

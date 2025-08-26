@@ -7,9 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-  IAmenities,
-} from '../../../home/interface';
+import { IAmenities, IReply, IUserQuery } from '../../../home/interface';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommentSectionComponent } from '../comment-section/comment-section.component';
@@ -21,20 +19,29 @@ import { LandlordQueriesComponent } from '../../../landlord/components/landlord-
 import { RenterQueriesComponent } from '../../../home/components/renter-queries/renter-queries.component';
 import { PropertyService } from '../../services';
 import { IProperty, LeaseType, PriceMode, PropertyType } from '../../interface';
+import { filter, tap } from 'rxjs';
 
 @Component({
   selector: 'app-property-details',
-  imports: [NgbCarouselModule, CommonModule, FormsModule, CommentSectionComponent, ButtonComponent,
-    LandlordQueriesComponent, RenterQueriesComponent, RouterModule
+  imports: [
+    NgbCarouselModule,
+    CommonModule,
+    FormsModule,
+    CommentSectionComponent,
+    ButtonComponent,
+    LandlordQueriesComponent,
+    RenterQueriesComponent,
+    RouterModule,
   ],
   templateUrl: './property-details.component.html',
   styleUrl: './property-details.component.scss',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyDetailsComponent implements OnInit {
-  
-  property = signal<IProperty | null>(null);;
+  property = signal<IProperty | null>(null);
+  queries: IUserQuery[] = [];
+
   activeUser: IUser | null = null;
   propertyTypeEnum = PropertyType;
   leaseTypeEnum = LeaseType;
@@ -48,15 +55,41 @@ export class PropertyDetailsComponent implements OnInit {
   constructor() {
     effect(async () => {
       this.activeUser = this.authService.currentUser();
+      this.loadQueriesForRenter();
     });
   }
-   
+
+  async loadQueriesForRenter() {
+    if (
+      this.activeUser?.id &&
+      !this.authService.isLandLord() &&
+      Number(this.activatedRoute.snapshot.params['id'])
+    ) {
+      this.queries = await this.userQueryService.getUserQueryByUserId(
+        this.activeUser.id,
+        Number(this.activatedRoute.snapshot.params['id'])
+      );
+    }
+  }
+
+  async loadQueriesForLandlord() {
+    if (
+      Number(this.activatedRoute.snapshot.params['id']) &&
+      this.authService.isLandLord()
+    ) {
+      this.queries = await this.userQueryService.getUserQueryByProperty(
+        Number(this.activatedRoute.snapshot.params['id'])
+      );
+    }
+  }
+
   ngOnInit(): void {
     if (this.activatedRoute.snapshot.params['id']) {
       this.getPropertyDetails(
         Number(this.activatedRoute.snapshot.params['id'])
       );
       this.getAmenitiesMap();
+      this.loadQueriesForLandlord();
     }
   }
 
@@ -71,21 +104,54 @@ export class PropertyDetailsComponent implements OnInit {
     e?.stopPropagation();
     if (!this.activeUser) {
       const user = await this.authService.loginSubmit();
-      if(user){
-        setTimeout(()=>this.openUserQueryModal());
+      if (user) {
+        setTimeout(() => this.openUserQueryModal());
       }
     } else {
-        this.openUserQueryModal();
+      this.openUserQueryModal();
     }
   }
 
-  private async getAmenitiesMap(){
+  private async getAmenitiesMap() {
     this.amenitiesMap = await this.propertyService.getAmenitiesMap();
   }
 
   openUserQueryModal() {
     this.userQueryService
-        .sendEnquiryModal(this.property() as IProperty, this.activeUser as IUser)
-        .subscribe((res) => {});
+      .sendEnquiryModal(this.property() as IProperty, this.activeUser as IUser)
+      .pipe()
+      .subscribe((res) => {
+        if (res) {
+          if (!this.authService.isLandLord()) {
+            this.loadQueriesForRenter();
+          } else {
+            this.loadQueriesForLandlord();
+          }
+        }
+      });
+  }
+
+  sendReply(query: IUserQuery) {
+    if (!query.replyText?.trim()) return;
+
+    const reply: IReply = {
+      message: query.replyText,
+      createdAt: Date.now(),
+    };
+
+    query.replies.push(reply);
+    query.replyText = '';
+
+    // Save to IndexedDB or service
+    this.updateQuery(query);
+  }
+
+  async updateQuery(query: IUserQuery) {
+    if (query.id) {
+      await this.userQueryService.update(query.id, {
+        replies: query.replies,
+      });
+      this.loadQueriesForLandlord();
+    }
   }
 }

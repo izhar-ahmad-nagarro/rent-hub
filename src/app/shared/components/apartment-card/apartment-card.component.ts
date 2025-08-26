@@ -29,11 +29,10 @@ import { IAmenities, IUser } from '../../../features';
 export class ApartmentCardComponent implements OnChanges {
   favorites = input<Map<unknown, unknown>>();
   property = input.required<IProperty>();
-
+  isLandLord = input<boolean>(false);
   activeUser = input<IUser | null>();
-  @Output() viewDetails = new EventEmitter<any>();
-  @Output() togglefavClick = new EventEmitter<any>();
-  @Output() sendEnquiryClick = new EventEmitter<any>();
+  @Output() togglefavClick = new EventEmitter<IProperty>();
+  @Output() sendEnquiryClick = new EventEmitter<IProperty>();
 
   @Input() amenitiesMap: Map<number, IAmenities> = new Map();
 
@@ -47,6 +46,7 @@ export class ApartmentCardComponent implements OnChanges {
       const fav = !!this.favorites()?.get(this.property()?.id);
       (this.property() as IProperty)['isFavorited'] = fav;
     }
+    console.log(this.isLandLord(), 'isLandlord')
   }
 
   toggleFavorite(e: Event) {

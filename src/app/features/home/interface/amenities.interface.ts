@@ -1,6 +1,6 @@
 export interface IAmenities{
     id: number;
-    code: string;
+    code?: string;
     label: string;
-    icon: string;
+    icon?: string;
 }

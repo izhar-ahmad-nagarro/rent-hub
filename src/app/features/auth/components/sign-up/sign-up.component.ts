@@ -34,7 +34,7 @@ export class SignUpComponent {
 
   signup() {
     if (this.signupForm.valid) {
-      this.signupUser.emit(this.signupForm.value)
+      this.signupUser.emit({...this.signupForm.value, role: Number(this.signupForm.value.role)})
     }
   }
 

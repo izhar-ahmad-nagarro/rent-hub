@@ -8,7 +8,7 @@ import { SignUpComponent } from '../components/sign-up/sign-up.component';
 })
 export class LoginSignupModalService {
   private readonly modalService = inject(NgbModal);
-  openLogin(): Promise<any> {
+  openLogin(): Promise<{ email: string; password: string }> {
     const modalRef = this.modalService.open(LoginComponent, {
       centered: true,
       backdrop: 'static',

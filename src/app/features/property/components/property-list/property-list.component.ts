@@ -23,7 +23,7 @@ export class PropertyListComponent {
   favorites = signal<Map<number, number>>(new Map());
   amenities: Map<number, IAmenities> = new Map();
   private userFavoriteService = inject(UserFavoritesService);
-  private authService = inject(AuthService);
+  authService = inject(AuthService);
   private propertyService = inject(PropertyService);
   private searchService = inject(SearchService);
   private userQueryService = inject(UserQueryService);

@@ -14,6 +14,7 @@
           (togglefavClick)="togglefavClick($event)"
           [favorites]="favorites()"
           [amenitiesMap]="amenities"
+          [isLandLord]="authService.isLandLord()"
         ></app-apartment-card>
 
         <!-- Edit/Delete Buttons -->

@@ -69,7 +69,7 @@
 
       <div class="mt-auto">
         <app-button
-          *ngIf="activeUser?.id !== property()?.ownerId"
+          *ngIf="!authService.isLandLord()"
           label="Send Enquiry"
           variant="primary"
           [size]="'sm'"
@@ -86,12 +86,10 @@
   <app-comment-section [propertyId]="property()?.id"></app-comment-section>
   <ng-container *ngIf="authService.isLoggedIn()">
     <app-landlord-queries
-      [propertyId]="property()?.id"
-      [currentUserId]="activeUser?.id"
-      [ownerId]="property()?.ownerId"
+      (sendReplyEvent)="sendReply($event)"
+      [queries]="queries"
       *ngIf="authService.isLandLord() && activeUser?.id === property()?.ownerId"
     ></app-landlord-queries>
-    <app-renter-queries *ngIf="!authService.isLandLord()" [propertyId]="property()?.id"
-      [currentUserId]="activeUser?.id"></app-renter-queries>
+    <app-renter-queries *ngIf="!authService.isLandLord()" [queries]="queries"></app-renter-queries>
   </ng-container>
 </div>

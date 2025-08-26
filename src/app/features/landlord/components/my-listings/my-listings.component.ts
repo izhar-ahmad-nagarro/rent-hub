@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, signal } from '@angular/core';
 import {
   ApartmentCardComponent,
 } from '../../../../shared';
@@ -14,13 +14,14 @@ import { IProperty } from '../../../property/interface';
   imports: [ApartmentCardComponent, CommonModule, RouterModule],
   templateUrl: './my-listings.component.html',
   styleUrl: './my-listings.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MyListingsComponent {
   properties = signal<IProperty[]>([]);
   favorites = signal<Map<number, number>>(new Map());
   amenities: Map<number, IAmenities> = new Map();
   
-  private authService = inject(AuthService);
+  authService = inject(AuthService);
   private propertyService = inject(PropertyService);
   private searchService = inject(SearchService);
   private userFavoriteService = inject(UserFavoritesService);

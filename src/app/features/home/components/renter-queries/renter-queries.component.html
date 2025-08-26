@@ -1,8 +1,8 @@
 <div class="mt-5 pb-2 overflow-y-auto query-container">
   <h3>My Sent Queries</h3>
-  <div *ngIf="queries.length === 0" class="text-muted">No queries sent.</div>
+  <div *ngIf="queries().length === 0" class="text-muted">No queries sent.</div>
 
-  <div *ngFor="let query of queries" class="card mb-3 shadow-sm">
+  <div *ngFor="let query of queries()" class="card mb-3 shadow-sm">
     <div class="card-body">
       <p><strong>Your Message:</strong> {{ query.message }}</p>
       <small class="text-muted">{{ query.createdAt | date:'short' }}</small>
