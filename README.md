@@ -55,14 +55,16 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 ## User Credentials
 
-To use application use credntials:
+Use application credntials:
 
-```For Renter
+```
+  For Renter
     renter@gmail.com
     Test@123
   For LandLord
     landlord@gmail.com
-    Test@123```
+    Test@123
+```
 
 ## Additional Resources
 
