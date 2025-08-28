@@ -2,6 +2,8 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
 
+Rent Hub is a renter/landlord platform built with Angular, deployed via AWS S3 + CloudFront, and integrated with GitHub Actions for CI/CD.
+
 ## Development server
 
 To start a local development server, run:
@@ -66,8 +68,19 @@ Use application credntials:
     Test@123
 ```
 
+## Git Hub Link
+[Rent Hub Code](https://github.com/izhar-ahmad-nagarro/rent-hub)
+
 ## Application URL
-[Rent Hub](http://rent-hub.s3-website-us-east-1.amazonaws.com/home)
+[Rent Hub](https://d11g95nn190npq.cloudfront.net/home)
+
+## Unit Test Cases
+    src\app\features\auth\services\auth.service.spec.ts
+    src\app\features\landlord\components\my-listings\my-listings.component.spec.ts
+
+
+## Bonus Points
+- Implement Add property page.
 
 ## Additional Resources
 
